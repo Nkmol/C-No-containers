@@ -1,0 +1,4 @@
+﻿  main.cpp
+c:\users\jeroe\documents\visual studio 2017\projects\eindopdracht c++1\eindopdracht c++1\main.cpp(10): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  Eindopdracht C++1.vcxproj -> c:\users\jeroe\documents\visual studio 2017\Projects\Eindopdracht C++1\Debug\Eindopdracht C++1.exe
+  Eindopdracht C++1.vcxproj -> c:\users\jeroe\documents\visual studio 2017\Projects\Eindopdracht C++1\Debug\Eindopdracht C++1.pdb (Partial PDB)
