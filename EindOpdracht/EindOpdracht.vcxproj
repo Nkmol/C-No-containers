@@ -111,6 +111,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Harbour.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="Ship.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Harbour.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Ship.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

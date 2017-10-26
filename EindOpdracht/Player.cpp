@@ -6,6 +6,11 @@ Player::Player(): gold_(0)
 {
 }
 
-Player::Player(const Ship& ship) : gold_(0), own_ship_ {ship}
+Player::Player(int gold) : gold_(gold)
 {
+}
+
+const int& Player::get_gold() const
+{
+	return gold_;
 }
