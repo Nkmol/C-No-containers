@@ -1,6 +1,7 @@
 #include "Player.h"
 #include <random>
 #include <iostream>
+#include "Vector.h"
 
 int main(int argc, char* argv[])
 {
@@ -15,7 +16,8 @@ int main(int argc, char* argv[])
 	std::cout << "Player gold: " << player.get_gold() << std::endl;
 
 	// Let player visit one of the harbors
-
+	auto vector_int = Vector<std::string>{ 2 };
+	std::cout << vector_int.capcity() << std::endl;
 
 	std::cin.get();
 }
