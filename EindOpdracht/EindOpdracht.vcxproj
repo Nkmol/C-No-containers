@@ -113,6 +113,7 @@
   <ItemGroup>
     <ClInclude Include="FileHandler.h" />
     <ClInclude Include="Harbour.h" />
+    <ClInclude Include="Map.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Ship.h" />
