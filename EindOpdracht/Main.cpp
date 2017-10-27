@@ -1,5 +1,6 @@
 #include <vld.h>
 #include "Player.h"
+#include "Harbour.h"
 #include <random>
 #include <iostream>
 #include "Vector.h"
@@ -31,6 +32,6 @@ int main(int argc, char* argv[])
 	{
 		std::cout << file_handler[i] << std::endl;
 	}
-
+	const Harbour harbour;
 	std::cin.get();
 }
