@@ -52,7 +52,7 @@ void Vector<T>::push_back(const T& value)
 	if(used_ >= capacity_)
 	{
 		// https://crntaylor.wordpress.com/2011/07/15/optimal-memory-reallocation-and-the-golden-ratio/
-		resize(capacity_*1.5);
+		resize(ceil(capacity_*1.5));
 	}
 
 	array_[used_++] = value;
@@ -80,7 +80,7 @@ void Vector<T>::resize(const size_type& cap)
 		capacity_ = 1;
 	}
 
-	T* temp = new T[cap];
+	T* temp = new T[capacity_];
 
 	for (auto i = 0; i < used_; i++)
 	{
