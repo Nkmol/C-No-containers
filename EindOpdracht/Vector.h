@@ -17,12 +17,12 @@ public:
 	Vector(Vector<T>& other);
 	Vector(Vector<T>&& other) noexcept;
 	Vector<T>& operator=(Vector<T> that);
-	Vector<T>& operator=(Vector<T>&& that);
+	Vector<T>& operator=(Vector<T>&& that) noexcept;
 	const int& capcity() const;
 	const int& used() const;
-	void push_back(const T& value);
+	void push_back(T& value);
 	void clear();
-	const T& operator[](size_type index) const;
+	T& operator[](size_type index) const;
 	void resize(const size_type& cap);
 
 	/// https://stackoverflow.com/questions/3279543/what-is-the-copy-and-swap-idiom
@@ -89,7 +89,7 @@ Vector<T>& Vector<T>::operator=(Vector<T> that)
 
 // Move assignment
 template <typename T>
-Vector<T>& Vector<T>::operator=(Vector<T>&& that)
+Vector<T>& Vector<T>::operator=(Vector<T>&& that) noexcept
 {
 	swap(*this, that);
 	return *this;
@@ -109,7 +109,7 @@ const int& Vector<T>::used() const
 }
 
 template <typename T>
-void Vector<T>::push_back(const T& value)
+void Vector<T>::push_back(T& value)
 {
 	if (used_ >= capacity_)
 	{
@@ -127,7 +127,7 @@ void Vector<T>::clear()
 }
 
 template <typename T>
-const T& Vector<T>::operator[](size_type index) const
+T& Vector<T>::operator[](size_type index) const
 {
 	return array_[index];
 }

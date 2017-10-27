@@ -1,15 +1,18 @@
 #include "CSVInterperter.h"
+#include "KeyValuePair.h"
 
 const std::string CSVInterperter::delimiter = ";";
+// Type that will represent the CSV structure
+using CSV_data_type = Vector<Vector<KeyValuePair<std::string, std::string>>>;
 
 CSVInterperter::CSVInterperter(FileHandler& handler) : handler_{handler}
 {
 }
 
-Map<std::string, std::string> CSVInterperter::create_columns() const
+CSV_data_type CSVInterperter::create_columns()
 {
+	Vector<Vector<KeyValuePair<std::string, std::string>>> data;
 	Vector<std::string> headers;
-	Map<std::string, std::string> result;
 	for (size_t i = 0; i < handler_.size(); i++)
 	{
 		auto line = handler_[i];
@@ -22,20 +25,24 @@ Map<std::string, std::string> CSVInterperter::create_columns() const
 			}
 			else
 			{
-				add_values(values, headers, result);
+				data.push_back(create_line(values, headers));
 			}
 		}
 	}
 
-	return result;
+	return data;
 }
 
-void CSVInterperter::add_values(Vector<std::string>& values, Vector<std::string>& headers, Map<std::string, std::string>& result)
+Vector<KeyValuePair<std::string, std::string>> CSVInterperter::create_line(Vector<std::string>& values, Vector<std::string>& headers)
 {
+	Vector<KeyValuePair<std::string, std::string>> properties;
 	for(int i = 0; i < values.used(); i++)
 	{
-		result.insert(headers[i], values[i]);
+		KeyValuePair<std::string, std::string> kv {headers[i], values[i]};
+		properties.push_back(kv);
 	}
+
+	return properties;
 }
 
 Vector<std::string> CSVInterperter::process_line(std::string& line)

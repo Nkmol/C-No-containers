@@ -114,7 +114,7 @@
     <ClInclude Include="CSVInterperter.h" />
     <ClInclude Include="FileHandler.h" />
     <ClInclude Include="Harbour.h" />
-    <ClInclude Include="Map.h" />
+    <ClInclude Include="KeyValuePair.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Ship.h" />

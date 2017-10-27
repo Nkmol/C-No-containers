@@ -33,10 +33,10 @@
     <ClInclude Include="FileHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Map.h">
+    <ClInclude Include="CSVInterperter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CSVInterperter.h">
+    <ClInclude Include="KeyValuePair.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
