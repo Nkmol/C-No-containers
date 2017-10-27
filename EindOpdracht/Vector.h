@@ -13,16 +13,35 @@ public:
 	explicit Vector(const size_type& cap);
 	explicit Vector();
 	~Vector();
+	Vector(Vector<T>& other);
+	Vector(Vector<T>&& other) noexcept;
+	Vector<T>& operator=(Vector<T> that);
+	Vector<T>& operator=(Vector<T>&& that);
 	const int& capcity() const;
 	const int& used() const;
 	void push_back(const T& value);
 	void clear();
 	const T& operator[](size_type index) const;
 	void resize(const size_type& cap);
+
+	/// https://stackoverflow.com/questions/3279543/what-is-the-copy-and-swap-idiom
+	/// https://stackoverflow.com/questions/5695548/public-friend-swap-member-function
+	friend void swap(Vector<T>& first, Vector<T>& second) noexcept //nothrow
+	{
+		// enable ADL (not necessary in our case, but good practice)
+		/// https://stackoverflow.com/questions/28130671/how-does-using-stdswap-enable-adl
+		using std::swap;
+
+		// by swapping the members of two objects,
+		// the two objects are effectively swapped
+		swap(first.capacity_, second.capacity_);
+		swap(first.used_, second.used_);
+		swap(first.array_, second.array_);
+	}
 };
 
 template <typename T>
-Vector<T>::Vector(const size_type& cap) : used_{0}, capacity_{cap}, array_{ new T[cap] }
+Vector<T>::Vector(const size_type& cap) : used_{0}, capacity_{cap}, array_{new T[cap]}
 {
 }
 
@@ -32,27 +51,64 @@ Vector<T>::Vector() : Vector(0)
 }
 
 template <typename T>
-Vector<T>::~Vector() {
+Vector<T>::~Vector()
+{
 	delete[] array_;
 }
 
+// Copy constructor
 template <typename T>
-const int& Vector<T>::capcity() const {
+Vector<T>::Vector(Vector<T>& other) : used_{other.used_}, capacity_{other.capacity_}
+{
+	// Copy data
+	// std::copy is marked as unsafe by vsc++
+	std::memcpy(array_, other.array_, capacity_);
+}
+
+// Move constructor
+template <typename T>
+Vector<T>::Vector(Vector<T>&& other) noexcept : Vector()
+{
+	swap(*this, other);
+}
+
+// Copy assignment
+// This is NOT const refence so we can make use of optimized Elide copy
+template <typename T>
+Vector<T>& Vector<T>::operator=(Vector<T> that)
+{
+	swap(*this, that);
+	return *this;
+}
+
+// Move assignment
+template <typename T>
+Vector<T>& Vector<T>::operator=(Vector<T>&& that)
+{
+	swap(*this, that);
+	return *this;
+}
+
+
+template <typename T>
+const int& Vector<T>::capcity() const
+{
 	return capacity_;
 }
 
 template <typename T>
-const int& Vector<T>::used() const {
+const int& Vector<T>::used() const
+{
 	return used_;
 }
 
 template <typename T>
 void Vector<T>::push_back(const T& value)
 {
-	if(used_ >= capacity_)
+	if (used_ >= capacity_)
 	{
 		// https://crntaylor.wordpress.com/2011/07/15/optimal-memory-reallocation-and-the-golden-ratio/
-		resize(ceil(capacity_*1.5));
+		resize(ceil(capacity_ * 1.5));
 	}
 
 	array_[used_++] = value;
@@ -75,7 +131,7 @@ void Vector<T>::resize(const size_type& cap)
 {
 	capacity_ = cap;
 
-	if(capacity_ <= 0)
+	if (capacity_ <= 0)
 	{
 		capacity_ = 1;
 	}
