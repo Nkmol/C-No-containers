@@ -1,8 +1,10 @@
+#include <vld.h>
 #include "Player.h"
 #include <random>
 #include <iostream>
 #include "Vector.h"
 #include "FileHandler.h"
+
 
 int main(int argc, char* argv[])
 {
