@@ -4,6 +4,7 @@
 #include "Vector.h"
 #include "FileHandler.h"
 #include "Map.h"
+#include "CSVInterperter.h"
 
 
 int main(int argc, char* argv[])
@@ -19,30 +20,17 @@ int main(int argc, char* argv[])
 	std::cout << "Player gold: " << player.get_gold() << std::endl;
 
 	FileHandler file_handler;
-	file_handler.load_file("schepen.csv");
+	file_handler.load_file("goederen hoeveelheid.csv");
 
-	for (size_t i = 0; i < file_handler.size(); i++)
+	CSVInterperter interperter{ file_handler };
+	auto result = interperter.create_columns();
+
+	// Get all types of ships
+	auto types = result.find("laken");
+	std::cout << std::endl;
+	for (int i = 0; i < types.used(); i++)
 	{
-		std::cout << file_handler[i] << std::endl;
-	}
-
-	Vector<std::string> vector;
-	vector.push_back("my value");
-	vector.push_back("my value 2");
-	for (size_t i = 0; i < vector.used(); i++)
-	{
-		std::cout << vector[i] << std::endl;
-	}
-
-	Map<std::string, std::string> map;
-	map.insert("testkey", "value1");
-	map.insert("testkey2", "value3");
-	map.insert("testkey", "value2");
-
-	auto find = map.find("testkey");
-	for (size_t i = 0; i < find.used(); i++)
-	{
-		std::cout << find[i] << std::endl;
+		std::cout << types[i] << std::endl;
 	}
 
 	std::cin.get();

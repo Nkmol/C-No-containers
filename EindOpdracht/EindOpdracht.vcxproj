@@ -111,6 +111,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CSVInterperter.h" />
     <ClInclude Include="FileHandler.h" />
     <ClInclude Include="Harbour.h" />
     <ClInclude Include="Map.h" />
@@ -120,6 +121,7 @@
     <ClInclude Include="Vector.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CSVInterperter.cpp" />
     <ClCompile Include="FileHandler.cpp" />
     <ClCompile Include="Harbour.cpp" />
     <ClCompile Include="Main.cpp" />

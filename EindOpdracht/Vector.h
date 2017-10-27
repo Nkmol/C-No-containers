@@ -1,5 +1,6 @@
 #pragma once
 #include <algorithm>
+#include <iostream>
 
 using size_type = size_t;
 
@@ -58,11 +59,16 @@ Vector<T>::~Vector()
 
 // Copy constructor
 template <typename T>
-Vector<T>::Vector(Vector<T>& other) : used_{other.used_}, capacity_{other.capacity_}
+Vector<T>::Vector(Vector<T>& other) : used_{other.used_}, capacity_{other.capacity_}, array_{new T[other.capacity_]}
 {
 	// Copy data
 	// std::copy is marked as unsafe by vsc++
-	std::memcpy(array_, other.array_, capacity_);
+	//std::memcpy(array_, other.array_, other.used_);
+
+	for (int i = 0; i < used_; ++i)
+	{
+		array_[i] = other.array_[i];
+	}
 }
 
 // Move constructor
