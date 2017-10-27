@@ -82,7 +82,7 @@ void Vector<T>::resize(const size_type& cap)
 
 	T* temp = new T[capacity_];
 
-	for (auto i = 0; i < used_; i++)
+	for (unsigned int i = 0; i < used_; i++)
 	{
 		temp[i] = array_[i];
 	}
