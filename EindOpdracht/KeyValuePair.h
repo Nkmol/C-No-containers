@@ -1,5 +1,5 @@
 #pragma once
-template<typename KEY, typename VALUE>
+template <typename KEY, typename VALUE>
 class KeyValuePair
 {
 	KEY key_;
@@ -17,9 +17,8 @@ KeyValuePair<KEY, VALUE>::KeyValuePair(const KEY& key, const VALUE& value) : key
 }
 
 template <typename KEY, typename VALUE>
-KeyValuePair<KEY, VALUE>::KeyValuePair()
+KeyValuePair<KEY, VALUE>::KeyValuePair() : KeyValuePair(KEY{}, VALUE{})
 {
-	
 }
 
 template <typename KEY, typename VALUE>

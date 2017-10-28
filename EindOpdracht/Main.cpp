@@ -21,8 +21,7 @@ int main(int argc, char* argv[])
 	FileHandler file_handler;
 	file_handler.load_file("schepen.csv");
 
-	CSVInterperter interperter{file_handler};
-	auto result = interperter.create_columns();
+	auto result = CSVInterperter::create_columns(file_handler);
 
 	// Create [Ship, price]
 	// This can be encapsulated to a Map<K, V>
