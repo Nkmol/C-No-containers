@@ -7,8 +7,8 @@ using size_type = size_t;
 template <typename T>
 class Vector
 {
-	unsigned int used_;
-	unsigned int capacity_;
+	size_type used_;
+	size_type capacity_;
 	T* array_;
 public:
 	explicit Vector(const size_type& cap);
@@ -17,12 +17,13 @@ public:
 	Vector(Vector<T>& other);
 	Vector(Vector<T>&& other) noexcept;
 	Vector<T>& operator=(Vector<T> that);
-	Vector<T>& operator=(Vector<T>&& that) noexcept;
+	Vector<T>& operator=(Vector<T>&& that);
 	const int& capcity() const;
 	const int& used() const;
 	void push_back(T& value);
 	void clear();
-	T& operator[](size_type index) const;
+	const T& operator[](const size_type& index) const;
+	T& operator[](const size_type& index);
 	void resize(const size_type& cap);
 
 	/// https://stackoverflow.com/questions/3279543/what-is-the-copy-and-swap-idiom
@@ -65,7 +66,7 @@ Vector<T>::Vector(Vector<T>& other) : used_{other.used_}, capacity_{other.capaci
 	// std::copy is marked as unsafe by vsc++
 	//std::memcpy(array_, other.array_, other.used_);
 
-	for (int i = 0; i < used_; ++i)
+	for (size_type i = 0; i < used_; ++i)
 	{
 		array_[i] = other.array_[i];
 	}
@@ -89,12 +90,11 @@ Vector<T>& Vector<T>::operator=(Vector<T> that)
 
 // Move assignment
 template <typename T>
-Vector<T>& Vector<T>::operator=(Vector<T>&& that) noexcept
+Vector<T>& Vector<T>::operator=(Vector<T>&& that)
 {
 	swap(*this, that);
 	return *this;
 }
-
 
 template <typename T>
 const int& Vector<T>::capcity() const
@@ -108,13 +108,15 @@ const int& Vector<T>::used() const
 	return used_;
 }
 
+// TODO Cannot make this value "const"
 template <typename T>
 void Vector<T>::push_back(T& value)
 {
 	if (used_ >= capacity_)
 	{
 		// https://crntaylor.wordpress.com/2011/07/15/optimal-memory-reallocation-and-the-golden-ratio/
-		resize(ceil(capacity_ * 1.5));
+		const auto new_size = static_cast<size_t>(ceil(capacity_ * 1.5));
+		resize(new_size);
 	}
 
 	array_[used_++] = value;
@@ -123,11 +125,23 @@ void Vector<T>::push_back(T& value)
 template <typename T>
 void Vector<T>::clear()
 {
-	std::fill_n(array_, capacity_, T{});
+	//std::fill_n(array_, capacity_, T{});
+	for (int i = 0; i < used_; i++)
+	{
+		array_[i] = T{};
+	}
+
+	used_ = 0;
 }
 
 template <typename T>
-T& Vector<T>::operator[](size_type index) const
+const T& Vector<T>::operator[](const size_type& index) const
+{
+	return array_[index];
+}
+
+template <typename T>
+T& Vector<T>::operator[](const size_type& index)
 {
 	return array_[index];
 }
@@ -140,6 +154,11 @@ void Vector<T>::resize(const size_type& cap)
 	if (capacity_ <= 0)
 	{
 		capacity_ = 1;
+	}
+
+	if (used_ > capacity_)
+	{
+		used_ = capacity_;
 	}
 
 	T* temp = new T[capacity_];

@@ -21,7 +21,7 @@ int main(int argc, char* argv[])
 	FileHandler file_handler;
 	file_handler.load_file("schepen.csv");
 
-	CSVInterperter interperter{ file_handler };
+	CSVInterperter interperter{file_handler};
 	auto result = interperter.create_columns();
 
 	// Create [Ship, price]
@@ -30,16 +30,18 @@ int main(int argc, char* argv[])
 	for (int i = 0; i < result.used(); i++)
 	{
 		const auto line = result[i];
-		Ship ship{ line[0].value(), stoi(line[2].value()), stoi(line[3].value()), stoi(line[4].value()), line[5].value() };
+		const Ship ship{
+			line[0].value(), stoi(line[2].value()), stoi(line[3].value()), stoi(line[4].value()), line[5].value()
+		};
 
-		KeyValuePair<Ship, int> kv { ship, stoi(line[1].value()) };
+		KeyValuePair<Ship, int> kv{ship, stoi(line[1].value())};
 
 		ship_shop_adapter.push_back(kv);
 	}
 
-	Harbour harbor{ ship_shop_adapter, player};
+	Harbour harbor{ship_shop_adapter, player};
 
-	while(true)
+	while (true)
 	{
 		harbor.OpenShipShop();
 
