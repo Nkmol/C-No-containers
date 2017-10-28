@@ -2,20 +2,18 @@
 #include <iostream>
 #include <string>
 #include <cstdlib>
+#include "Ship.h"
+#include "Player.h"
 
 class Harbour
 {
-	void menu();
-	void mainMenu();
-	void optionsMenu();
-	void options();
-	int choice1 = 0;
-	int choice2 = 3;
+	using ship_shop_datatype = Vector<KeyValuePair<Ship, int>>;
+	ship_shop_datatype adapter_ships_;
+	Player player_;
 
 public:
-	Harbour();
-private:
-	bool inHarbour = true;
+	Harbour(ship_shop_datatype& data_adapter, const Player& player);
+	void OpenShipShop();
+	const int& get_ship_price(const Ship& ship) const;
+	void buy_ship(int ship_index);
 };
-
-

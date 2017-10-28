@@ -4,7 +4,8 @@
 #include "Vector.h"
 #include "FileHandler.h"
 #include "CSVInterperter.h"
-
+#include "Ship.h"
+#include "Harbour.h"
 
 int main(int argc, char* argv[])
 {
@@ -16,7 +17,6 @@ int main(int argc, char* argv[])
 	// Create player with random amount of money (10000 to 20000)
 	const std::uniform_int_distribution<int> dist_gold(10000, 20000);
 	const Player player{dist_gold(mt)};
-	std::cout << "Player gold: " << player.get_gold() << std::endl;
 
 	FileHandler file_handler;
 	file_handler.load_file("schepen.csv");
@@ -24,19 +24,26 @@ int main(int argc, char* argv[])
 	CSVInterperter interperter{ file_handler };
 	auto result = interperter.create_columns();
 
-	// Get all types of ships
-	std::cout << std::endl;
+	// Create [Ship, price]
+	// This can be encapsulated to a Map<K, V>
+	Vector<KeyValuePair<Ship, int>> ship_shop_adapter;
 	for (int i = 0; i < result.used(); i++)
 	{
 		const auto line = result[i];
-		for(int j = 0; j < line.used(); j++)
-		{
-			std::cout << line[j].value() << "[ " << line[j].key() << " ]" << std::endl;
-		}
+		Ship ship{ line[0].value(), stoi(line[2].value()), stoi(line[3].value()), stoi(line[4].value()), line[5].value() };
 
-		std::cout << "Ship created" << std::endl;
-		std::cout << std::endl;
+		KeyValuePair<Ship, int> kv { ship, stoi(line[1].value()) };
+
+		ship_shop_adapter.push_back(kv);
 	}
 
-	std::cin.get();
+	Harbour harbor{ ship_shop_adapter, player};
+
+	while(true)
+	{
+		harbor.OpenShipShop();
+
+		std::cin.get();
+		system("cls"); // hmm - OS specific and not pure c++
+	}
 }

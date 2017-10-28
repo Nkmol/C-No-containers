@@ -1,101 +1,58 @@
 #include "Harbour.h"
+#include "Ship.h"
 
-
-
-Harbour::Harbour()
+Harbour::Harbour(ship_shop_datatype& data_adapter, const Player& player) : adapter_ships_{ data_adapter }, player_ {player} 
 {
-	menu();
-	std::cin.get();
-	//while (inHarbour) {
-	//	std::cout << "What do you want to do? ";
-	//	std::cin >> option;
-	//	std::cout << option;
-	//}
 }
 
-void Harbour::menu() {
+void Harbour::OpenShipShop()
+{
+	std::cout << player_ << std::endl;
+	std::cout << std::endl;
+	std::cout << "type   " << "laadruimte   " << "kanonnen   " << "shadepunten   " << "bijzonderheden   " << "prijs   " << std::endl;;
+	for (int i = 0; i < adapter_ships_.used(); i++)
+	{
+		std::cout << "[" << i << "]. " << adapter_ships_[i].key() << " = " << adapter_ships_[i].value() << std::endl;;
+	}
 
-		choice2 = 0;
-		mainMenu();
+	int number;
+	std::cin >> number;
+	buy_ship(number);
+}
 
-		switch (Harbour::choice1) {
-		case 1:
-			std::cout << "1 - Inkopen/Verkopen goederen\n";
-			break;
-		case 2:
-			std::cout << "2 - Kopen/verkopen kannonen\n";
-			break;
-		case 3:
-			std::cout << "3 - Kopen/verkopen schepen\n";
-			break;
-		case 4:
-			std::cout << "4 - Weg varen\n";
-			break;
-		case 5:
-			std::cout << "5 - Reparen boot\n";
-			break;
-		case 6:
-			std::cout << "6 - Weg varen\n";
-			break;
-		case 7:
-			std::cout << "7 - Exit\n";
-			break;
+const int& Harbour::get_ship_price(const Ship& ship) const
+{
+	for (int i = 0; i < adapter_ships_.used(); i++)
+	{
+		// TODO change to equality operator? check by pointers instead?
+		if(adapter_ships_[i].key().name() == ship.name())
+		{
+			return adapter_ships_[i].value();
 		}
+	}
 
+	return 0;
 }
 
-void Harbour::options(void) {
+void Harbour::buy_ship(int ship_index)
+{
+	if (ship_index < 0) return;
 
-	do {
-		optionsMenu();
+	auto ship_to_buy = adapter_ships_[ship_index];
+	auto name = ship_to_buy.key().name();
 
-		switch (choice2) {
+	system("cls"); // hmm - OS specific and not pure c++
+	std::cout << "Buying Ship \"" << name << "\"" << std::endl;
 
-		case 1:
-			std::cout << "So difficult!\n";
-			break;
+	if(ship_to_buy.value() > player_.get_gold())
+	{
+		std::cout << "You seem to be " << ship_to_buy.value() - player_.get_gold() << " gold off. Try again later." << std::endl;
+		OpenShipShop();
+		return;
+	}
 
-		case 2:
-			std::cout << "Beep!\n";
-			break;
+	// if player has ship, sell at 50%
 
-		case 3:
-			break;
-
-		default:
-			break;
-
-		}
-
-	} while (choice2 != 3);
-
-
-}
-
-void Harbour::mainMenu(void) {
-
-
-
-	std::cout << "Menu\n";
-	std::cout << "1 - Inkopen/Verkopen goederen\n";
-	std::cout << "2 - Kopen/verkopen kannonen\n";
-	std::cout << "3 - Kopen/verkopen schepen\n";
-	std::cout << "4 - Weg varen\n";
-	std::cout << "5 - Reparen boot\n";
-	std::cout << "6 - Weg varen\n";
-	std::cout << "7 - Exit\n";
-	std::cout << "Please choose: ";
-	std::cin >> choice1;
-
-}
-
-void Harbour::optionsMenu(void) {
-
-	std::cout << "Options Menu\n";
-	std::cout << "1 - Difficulty\n";
-	std::cout << "2 - Sound";
-	std::cout << "3 - Back\n";
-	std::cout << "Please choose: ";
-	std::cin >> choice2;
-
+	player_.decrease_gold(ship_to_buy.value());
+	player_.set_ship(ship_to_buy.key());
 }
