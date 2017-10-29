@@ -1,7 +1,7 @@
 #include "Harbour.h"
 #include "Ship.h"
 
-Harbour::Harbour(ship_shop_datatype& data_adapter, const Player& player) : adapter_ships_{ data_adapter }, player_ {player} 
+Harbour::Harbour(const ship_shop_datatype& data_adapter, Player& player) : adapter_ships_{ data_adapter }, player_(player)
 {
 }
 
@@ -52,6 +52,11 @@ void Harbour::buy_ship(int ship_index)
 	}
 
 	// if player has ship, sell at 50%
+	if(player_.has_ship())
+	{
+		const int& price = get_ship_price(player_.get_ship());
+		player_.increase_gold(price*0.5);
+	}
 
 	player_.decrease_gold(ship_to_buy.value());
 	player_.set_ship(ship_to_buy.key());

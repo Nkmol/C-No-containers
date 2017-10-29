@@ -16,7 +16,7 @@ int main(int argc, char* argv[])
 	// ~ init ~
 	// Create player with random amount of money (10000 to 20000)
 	const std::uniform_int_distribution<int> dist_gold(10000, 20000);
-	const Player player{dist_gold(mt)};
+	Player player{dist_gold(mt)};
 
 	FileHandler file_handler;
 	file_handler.load_file("schepen.csv");
@@ -35,10 +35,11 @@ int main(int argc, char* argv[])
 
 		KeyValuePair<Ship, int> kv{ship, stoi(line[1].value())};
 
-		ship_shop_adapter.push_back(kv);
+		ship_shop_adapter.push_back(kv); 
 	}
 
-	Harbour harbor{ship_shop_adapter, player};
+	const auto& adapter = ship_shop_adapter;
+	Harbour harbor{ adapter, player };
 
 	while (true)
 	{
