@@ -13,7 +13,9 @@ class Harbour
 
 public:
 	Harbour(const ship_shop_datatype& data_adapter, Player& player);
-	void OpenShipShop();
+	int open_shop() const;
+	void process_option(const int& option) const;
+	void OpenShipShop() const;
 	const int& get_ship_price(const Ship& ship) const;
-	void buy_ship(int ship_index);
+	void buy_ship(int ship_index) const;
 };
