@@ -7,7 +7,7 @@ Player::Player() : Player(0)
 }
 
 // Right way of initalizing empty object?
-Player::Player(int gold) : gold_(gold), ship_{ &Ship::empty_ship }
+Player::Player(int gold) : gold_{ gold }, ship_{ &Ship::empty_ship }
 {
 }
 

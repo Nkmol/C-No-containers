@@ -7,6 +7,7 @@
 #include "Ship.h"
 #include "Harbour.h"
 #include <sstream>
+#include "Product.h"
 
 
 std::stringstream standard_cout_stream(Player& player)
@@ -44,6 +45,40 @@ Vector<KeyValuePair<Ship, int>> create_ship_shop_adapter()
 	return ship_shop_adapter;
 }
 
+Vector<KeyValuePair<std::string, Vector<Product>>> create_goods_shop_adapter()
+{
+	FileHandler file_handler;
+	file_handler.load_file("goederen prijzen.csv");
+
+	auto result = CSVInterperter::create_columns(file_handler);
+
+	// Create [City_name, [goods_name, span_amount]]
+	Vector<KeyValuePair<std::string, Vector<Product>>> goods_adapter;
+	for (int i = 0; i < result.used(); i++)
+	{
+		std::string city;
+		Vector<Product> goods;
+		const auto line = result[i];
+		for (int j = 0; j < line.used(); j++)
+		{
+			const auto& value = line[j];
+			if(value.key() == "")
+			{
+				city = value.value();
+				continue;
+			}
+
+			auto product = Product{ value.key(), value.value() };
+			goods.push_back(product);
+		}
+
+		KeyValuePair<std::string, Vector<Product>> kv{ city, goods };
+		goods_adapter.push_back(kv);
+	}
+
+	return goods_adapter;
+}
+
 int main(int argc, char* argv[])
 {
 	// init randomizer by seed (seed is hardware coupled)
@@ -55,27 +90,40 @@ int main(int argc, char* argv[])
 	const std::uniform_int_distribution<int> dist_gold(10000, 20000);
 	Player player{dist_gold(mt)};
 
+
 	// After construction, the adapter should not be modified
-	const auto& adapter = create_ship_shop_adapter();
-	Harbour harbor{ adapter, player };
+	const auto adapter_ships = create_ship_shop_adapter();
+	const auto adapter_goods = create_goods_shop_adapter();
+
+	Vector<Harbour> harbours;
+	for (int i = 0; i < adapter_goods.used(); i++)
+	{
+		//Harbour h {adapter_ships, adapter_goods[i].value(), mt, adapter_goods[i].key()};
+		const Harbour h { &adapter_ships, &adapter_goods[i].value(), &mt, adapter_goods[i].key() };
+		harbours.push_back(h);
+	}
+	
+	auto& r_harbour = harbours[std::uniform_int_distribution<int> (0, harbours.used())(mt)];
+	r_harbour.enter_shop(&player);
 
 	while (!player.has_ship()) {
 		std::cout << standard_cout_stream(player).str();
 		std::cout << "First, get yourself a worthy ship" << std::endl;
 
-		harbor.OpenShipShop();
+		r_harbour.open_ship_shop();
 	}
-	
 
 	while (true)
 	{
 		std::cout << standard_cout_stream(player).str();
-		const int option = harbor.open_shop();
+		const int option = r_harbour.open_shop();
 
 		std::cout << standard_cout_stream(player).str();
-		harbor.process_option(option);
+		r_harbour.process_option(option);
 
 		std::cin.ignore();
 	}
+
+	std::cin.ignore();
 }
 

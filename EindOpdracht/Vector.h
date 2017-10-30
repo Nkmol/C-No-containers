@@ -10,21 +10,6 @@ class Vector
 	size_type used_;
 	size_type capacity_;
 	T* array_;
-public:
-	explicit Vector(const size_type& cap);
-	explicit Vector();
-	~Vector();
-	Vector(Vector<T>& other);
-	Vector(Vector<T>&& other) noexcept;
-	Vector<T>& operator=(Vector<T> that);
-	Vector<T>& operator=(Vector<T>&& that);
-	const int& capcity() const;
-	const int& used() const;
-	void push_back(T& value);
-	void clear();
-	const T& operator[](const size_type& index) const;
-	T& operator[](const size_type& index);
-	void resize(const size_type& cap);
 
 	/// https://stackoverflow.com/questions/3279543/what-is-the-copy-and-swap-idiom
 	/// https://stackoverflow.com/questions/5695548/public-friend-swap-member-function
@@ -40,6 +25,21 @@ public:
 		swap(first.used_, second.used_);
 		swap(first.array_, second.array_);
 	}
+public:
+	Vector(const size_type& cap);
+	Vector();
+	~Vector();
+	Vector(const Vector<T>& other);
+	Vector(Vector<T>&& other) noexcept;
+	Vector<T>& operator=(Vector<T> that);
+	Vector<T>& operator=(Vector<T>&& that);
+	const int& capcity() const;
+	const int& used() const;
+	void push_back(const T& value);
+	void clear();
+	const T& operator[](const size_type& index) const;
+	T& operator[](const size_type& index);
+	void resize(const size_type& cap);
 };
 
 template <typename T>
@@ -52,15 +52,15 @@ Vector<T>::Vector() : Vector(0)
 {
 }
 
+#pragma region Rule of five  
 template <typename T>
 Vector<T>::~Vector()
 {
 	delete[] array_;
 }
 
-// Copy constructor
 template <typename T>
-Vector<T>::Vector(Vector<T>& other) : used_{other.used_}, capacity_{other.capacity_}, array_{new T[other.capacity_]}
+Vector<T>::Vector(const Vector<T>& other) : used_{ other.used_ }, capacity_{ other.capacity_ }, array_{ new T[other.capacity_] }
 {
 	// Copy data
 	// std::copy is marked as unsafe by vsc++
@@ -96,6 +96,8 @@ Vector<T>& Vector<T>::operator=(Vector<T>&& that)
 	return *this;
 }
 
+#pragma endregion Rule of five  
+
 template <typename T>
 const int& Vector<T>::capcity() const
 {
@@ -110,7 +112,7 @@ const int& Vector<T>::used() const
 
 // TODO Cannot make this value "const"
 template <typename T>
-void Vector<T>::push_back(T& value)
+void Vector<T>::push_back(const T& value)
 {
 	if (used_ >= capacity_)
 	{

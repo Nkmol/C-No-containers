@@ -2,18 +2,13 @@
 
 const Ship Ship::empty_ship("empty", 0, 0, 0, "");
 
-Ship::Ship(): shadepunten_(0), laadruimte_(0), kanonnen_(0)
+Ship::Ship(): Ship{ empty_ship }
 {
 }
 
-// TODO quickfix
 Ship::Ship(const std::string& naam, int laadruimte, int kanonnen, int shadepunten, const std::string& bijzonderheden)
 	: shadepunten_{ shadepunten }, laadruimte_{ laadruimte }, kanonnen_{ kanonnen }, naam_{ naam },
-	bijzonderheden_{ bijzonderheden }
-{
-}
-
-Ship::Ship(Vector<KeyValuePair<std::string, std::string>>& data) : Ship(data[0].value() , stoi(data[2].value()), stoi(data[3].value()), stoi(data[4].value()), data[5].value())
+	bijzonderheden_{ bijzonderheden }, cur_laadruimte_ { 0 }
 {
 }
 
@@ -35,6 +30,11 @@ const int& Ship::laadruimte() const
 	return laadruimte_;
 }
 
+const int& Ship::cur_laadruimte() const
+{
+	return cur_laadruimte_;
+}
+
 const int& Ship::kanonnen() const
 {
 	return kanonnen_;
@@ -50,3 +50,7 @@ const std::string& Ship::bijzonderheden() const
 	return bijzonderheden_;
 }
 
+const int& Ship::add_good(int value) const
+{
+	return cur_laadruimte_ += value;
+}

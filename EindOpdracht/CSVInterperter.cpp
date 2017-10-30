@@ -1,5 +1,6 @@
 #include "CSVInterperter.h"
 #include "KeyValuePair.h"
+#include "Helper.h"
 
 const std::string CSVInterperter::delimiter_ = ";";
 const std::string CSVInterperter::ignore = "#";
@@ -57,17 +58,7 @@ Vector<std::string> CSVInterperter::process_line(std::string line)
 		return values;
 	}
 
-	size_t pos = 0;
-	while ((pos = line.find(delimiter_)) != std::string::npos)
-	{
-		auto properties = line.substr(0, pos);
-		values.push_back(properties);
-
-		line.erase(0, pos + delimiter_.length());
-	}
-
-	// Push last value
-	values.push_back(line);
+	Helper::search_for_delimeter(line, delimiter_, values);
 
 	return values;
 }
