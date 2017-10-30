@@ -1,16 +1,19 @@
 #include "Harbour.h"
 #include "Ship.h"
-#include <random>
 #include "Helper.h"
 
-Harbour::Harbour(const ships_shop_datatype* ships, const goods_shop_datatype* goods, std::mt19937* random,
+Harbour::Harbour(const ships_shop_datatype* ships, const goods_shop_datatype* goods,
+                 const cannons_shop_datatype* cannons, std::mt19937* random,
                  Player* player, const std::string& name)
-	: adapter_goods_{goods}, adapter_ships_{ships}, player_ {player}, random_{random}, name_{name}
+	: adapter_goods_{goods}, adapter_ships_{ships}, adapter_cannons_{cannons}, player_ {
+		player
+	}, random_{random}, name_{name}
 {
 }
 
-Harbour::Harbour(const ships_shop_datatype* ships, const goods_shop_datatype* goods, std::mt19937* random, const std::string& name) : Harbour(
-	ships, goods, random, nullptr, name)
+Harbour::Harbour(const ships_shop_datatype* ships, const goods_shop_datatype* goods,
+                 const cannons_shop_datatype* cannons, std::mt19937* random, const std::string& name) : Harbour(
+	ships, goods, cannons, random, nullptr, name)
 {
 }
 
@@ -26,7 +29,8 @@ Harbour::~Harbour()
 void Harbour::enter_shop(Player* player)
 {
 	player_ = player;
-	calculate_goods_prices();
+	calculate_good_prices();
+	calculate_cannon_prices();
 }
 
 int Harbour::open_shop() const
@@ -53,6 +57,8 @@ void Harbour::process_option(const int& option)
 		open_goods_shop();
 		break;
 	case 2:
+		open_cannons_shop();
+		break;
 	case 3:
 		open_ship_shop();
 		break;
@@ -64,6 +70,52 @@ void Harbour::process_option(const int& option)
 	}
 }
 
+void Harbour::open_cannons_shop()
+{
+	std::cout << "Our cannons: " << std::endl;
+	auto& adapter = *adapter_cannons_;
+	for (int i = 0; i < adapter.used(); i++)
+	{
+		auto& cannon = adapter[i];
+		std::cout << "[" << i << "]. " << cannon.get_type() << " [" << cannon.get_actual_amount() << "] = " << cannon.get_price() << std::endl;
+	}
+
+	int number;
+	std::cin >> number;
+
+	buy_cannon(number);
+}
+
+void Harbour::buy_cannon(int number)
+{
+	auto& player_ship = player_->get_ship();
+	if (player_ship.cur_laadruimte() + 1 > player_ship.laadruimte())
+	{
+		std::cout << "It seems that your ship cannot carry any more goods. " << std::endl;
+		std::cin.ignore();
+		return;
+	}
+
+
+	auto& adapter = *adapter_cannons_;
+	if (adapter[number].get_actual_amount() <= 0)
+	{
+		std::cout << "Seems like this cannon is out of stock" << std::endl;
+		return;
+	}
+
+	if (adapter[number].get_price() > player_->get_gold())
+	{
+		std::cout << "You seem to be " << adapter[number].get_price() - player_->get_gold() << " gold off. Try again later."
+			<< std::endl;
+
+		return;
+	}
+	
+	player_->decrease_gold(adapter[number].get_price());
+	player_ship.add_good(1);
+	adapter[number].reduce_actual_amount(1);
+}
 
 void Harbour::open_goods_shop()
 {
@@ -104,7 +156,16 @@ void Harbour::buy_good(int number)
 	player_ship.add_good(1);
 }
 
-void Harbour::calculate_goods_prices()
+void Harbour::calculate_cannon_prices()
+{
+	auto& adapter = *adapter_cannons_;
+	for (int i = 0; i < adapter.used(); i++)
+	{
+		adapter[i].recalculate(*random_);
+	}
+}
+
+void Harbour::calculate_good_prices()
 {
 	auto& adapter = *adapter_goods_;
 	for (int i = 0; i < adapter.used(); i++)

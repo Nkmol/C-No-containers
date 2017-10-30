@@ -8,6 +8,7 @@
 #include "Harbour.h"
 #include <sstream>
 #include "Product.h"
+#include "Cannon.h"
 
 
 std::stringstream standard_cout_stream(Player& player)
@@ -79,6 +80,17 @@ Vector<KeyValuePair<std::string, Vector<Product>>> create_goods_shop_adapter()
 	return goods_adapter;
 }
 
+Vector<Cannon> create_cannons_adapter()
+{
+	Vector<Cannon> result;
+
+	result.push_back(Cannon{ "light", "0-5", 50 });
+	result.push_back(Cannon{ "medium", "0-3", 200 });
+	result.push_back(Cannon{ "heavy", "0-2", 1000 });
+
+	return result;
+}
+
 int main(int argc, char* argv[])
 {
 	// init randomizer by seed (seed is hardware coupled)
@@ -94,12 +106,13 @@ int main(int argc, char* argv[])
 	// After construction, the adapter should not be modified
 	const auto adapter_ships = create_ship_shop_adapter();
 	const auto adapter_goods = create_goods_shop_adapter();
+	const auto adapter_cannons = create_cannons_adapter();
 
 	Vector<Harbour> harbours;
 	for (int i = 0; i < adapter_goods.used(); i++)
 	{
 		//Harbour h {adapter_ships, adapter_goods[i].value(), mt, adapter_goods[i].key()};
-		const Harbour h { &adapter_ships, &adapter_goods[i].value(), &mt, adapter_goods[i].key() };
+		const Harbour h { &adapter_ships, &adapter_goods[i].value(), &adapter_cannons, &mt, adapter_goods[i].key() };
 		harbours.push_back(h);
 	}
 	
