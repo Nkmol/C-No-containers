@@ -3,21 +3,24 @@
 #include "Helper.h"
 
 Harbour::Harbour(const ships_shop_datatype* ships, const goods_shop_datatype* goods,
-                 const cannons_shop_datatype* cannons, std::mt19937* random,
+                 const cannons_shop_datatype* cannons, const routes_datatype* routes,
+                 std::mt19937* random,
                  Player* player, const std::string& name)
-	: adapter_goods_{goods}, adapter_ships_{ships}, adapter_cannons_{cannons}, player_ {
+	: adapter_goods_{goods}, adapter_ships_{ships}, adapter_cannons_{cannons}, adapter_routes_{routes}, player_ {
 		player
 	}, random_{random}, name_{name}
 {
 }
 
 Harbour::Harbour(const ships_shop_datatype* ships, const goods_shop_datatype* goods,
-                 const cannons_shop_datatype* cannons, std::mt19937* random, const std::string& name) : Harbour(
-	ships, goods, cannons, random, nullptr, name)
+                 const cannons_shop_datatype* cannons, const routes_datatype* routes, std::mt19937* random,
+                 const std::string& name) : Harbour(
+	ships, goods, cannons, routes, random, nullptr, name)
 {
 }
 
-Harbour::Harbour() : Harbour(nullptr, nullptr, nullptr, nullptr, "")
+// Only used for vector allocation
+Harbour::Harbour() : Harbour(nullptr, nullptr, nullptr, nullptr, nullptr, "")
 {
 	
 }
@@ -49,7 +52,7 @@ int Harbour::open_shop() const
 	return number;
 }
 
-void Harbour::process_option(const int& option)
+int Harbour::process_option(const int& option)
 {
 	switch (option)
 	{
@@ -63,11 +66,35 @@ void Harbour::process_option(const int& option)
 		open_ship_shop();
 		break;
 	case 4:
+		return open_harbour_list();
+		break;
 	case 5:
 	case 6:
 	default:
-		open_shop();
+		break;
 	}
+
+	return -1;
+}
+
+int Harbour::open_harbour_list()
+{
+	std::cout << "Choose a harbour you would like to sail to. " << std::endl;
+	std::cout << "Current: " << name_ << std::endl;
+
+	auto& adapter = *adapter_routes_;
+	for (int i = 0; i < adapter.used(); i++)
+	{
+		auto& route = adapter[i];
+		if (route.to() != name_) {
+			std::cout << "[" << i << "]. " << route.to() << " in " << route.turns() << " turns." << std::endl;
+		}
+	}
+
+	int number;
+	std::cin >> number;
+
+	return number;
 }
 
 void Harbour::open_cannons_shop()

@@ -9,6 +9,7 @@
 #include <sstream>
 #include "Product.h"
 #include "Cannon.h"
+#include "SailRoute.h"
 
 
 std::stringstream standard_cout_stream(Player& player)
@@ -69,8 +70,8 @@ Vector<KeyValuePair<std::string, Vector<Product>>> create_goods_shop_adapter()
 				continue;
 			}
 
-			auto product = Product{ value.key(), value.value() };
-			goods.push_back(product);
+			Product p { value.key(), value.value() };
+			goods.push_back(p);
 		}
 
 		KeyValuePair<std::string, Vector<Product>> kv{ city, goods };
@@ -91,6 +92,39 @@ Vector<Cannon> create_cannons_adapter()
 	return result;
 }
 
+Vector<KeyValuePair<std::string, Vector<SailRoute>>> create_routes_adapter()
+{
+	FileHandler file_handler;
+	file_handler.load_file("afstanden tussen steden.csv");
+
+	auto result = CSVInterperter::create_columns(file_handler);
+	Vector<KeyValuePair<std::string, Vector<SailRoute>>> adapter;
+
+	for (int i = 0; i < result.used(); i++)
+	{
+		std::string from;
+		Vector<SailRoute> routes;
+		const auto line = result[i];
+		for (int j = 0; j < line.used(); j++)
+		{
+			const auto& value = line[j];
+			if (value.key() == "")
+			{
+				from = value.value();
+				continue;
+			}
+
+			SailRoute r{ from, value.key(), std::stoi(value.value()) };
+			routes.push_back(r);
+		}
+
+		KeyValuePair<std::string, Vector<SailRoute>> kv { from, routes };
+		adapter.push_back(kv);
+	}
+
+	return adapter;
+}
+
 int main(int argc, char* argv[])
 {
 	// init randomizer by seed (seed is hardware coupled)
@@ -102,23 +136,37 @@ int main(int argc, char* argv[])
 	const std::uniform_int_distribution<int> dist_gold(10000, 20000);
 	Player player{dist_gold(mt)};
 
-
 	// After construction, the adapter should not be modified
 	const auto adapter_ships = create_ship_shop_adapter();
 	const auto adapter_goods = create_goods_shop_adapter();
 	const auto adapter_cannons = create_cannons_adapter();
+	const auto adapter_routes = create_routes_adapter();
 
+	/// Initalize harbours
 	Vector<Harbour> harbours;
 	for (int i = 0; i < adapter_goods.used(); i++)
 	{
-		//Harbour h {adapter_ships, adapter_goods[i].value(), mt, adapter_goods[i].key()};
-		const Harbour h { &adapter_ships, &adapter_goods[i].value(), &adapter_cannons, &mt, adapter_goods[i].key() };
+		// link routes and goods (by harbour name from one of the lists)
+		// TODO better to intialize independently
+		const Vector<SailRoute>* adapter_routes_harbour = nullptr;
+		for(int j = 0; i < adapter_routes.used(); i++)
+		{
+			// Same harbour
+			if(adapter_routes[i].key() == adapter_goods[i].key())
+			{
+				adapter_routes_harbour = &adapter_routes[i].value();
+				break;
+			}
+		}
+
+		const Harbour h { &adapter_ships, &adapter_goods[i].value(), &adapter_cannons, adapter_routes_harbour, &mt, adapter_goods[i].key() };
 		harbours.push_back(h);
 	}
 	
 	auto& r_harbour = harbours[std::uniform_int_distribution<int> (0, harbours.used())(mt)];
 	r_harbour.enter_shop(&player);
 
+	// First buy a ship
 	while (!player.has_ship()) {
 		std::cout << standard_cout_stream(player).str();
 		std::cout << "First, get yourself a worthy ship" << std::endl;
@@ -132,7 +180,12 @@ int main(int argc, char* argv[])
 		const int option = r_harbour.open_shop();
 
 		std::cout << standard_cout_stream(player).str();
-		r_harbour.process_option(option);
+		const int option_sub = r_harbour.process_option(option);
+
+		if(option == 4)
+		{
+			// Simulate sailing
+		}
 
 		std::cin.ignore();
 	}

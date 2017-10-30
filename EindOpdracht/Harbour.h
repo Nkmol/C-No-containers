@@ -5,29 +5,35 @@
 #include <random>
 #include "Product.h"
 #include "Cannon.h"
+#include "SailRoute.h"
 
 class Harbour
 {
 	using ships_shop_datatype = Vector<KeyValuePair<Ship, int>>;
 	using goods_shop_datatype = Vector<Product>;
 	using cannons_shop_datatype = Vector<Cannon>;
+	using routes_datatype = Vector<SailRoute>;
 
 	const goods_shop_datatype* adapter_goods_;
 	const ships_shop_datatype* adapter_ships_;
 	const cannons_shop_datatype* adapter_cannons_;
+	const routes_datatype* adapter_routes_;
 
 	Player* player_;
 	std::mt19937* random_;
 
 	std::string name_;
 public:
-	Harbour(const ships_shop_datatype* ships, const goods_shop_datatype* goods, const cannons_shop_datatype* cannons, std::mt19937* random, Player* player, const std::string& name);
-	Harbour(const ships_shop_datatype* ships, const goods_shop_datatype* goods, const cannons_shop_datatype* cannons, std::mt19937* random, const std::string& name);
+	Harbour(const ships_shop_datatype* ships, const goods_shop_datatype* goods, const cannons_shop_datatype* cannons, const routes_datatype* routes,
+		std::mt19937* random, Player* player, const std::string& name);
+	Harbour(const ships_shop_datatype* ships, const goods_shop_datatype* goods, const cannons_shop_datatype* cannons, const routes_datatype* routes,
+		std::mt19937* random, const std::string& name);
 	Harbour();
 	~Harbour();
 	void enter_shop(Player* player);
 	int open_shop() const;
-	void process_option(const int& option);
+	int process_option(const int& option);
+	int open_harbour_list();
 	void open_cannons_shop();
 	void buy_cannon(int number);
 	void open_goods_shop();
