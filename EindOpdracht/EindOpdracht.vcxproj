@@ -122,6 +122,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="SailRoute.h" />
     <ClInclude Include="Ship.h" />
+    <ClInclude Include="String.h" />
     <ClInclude Include="Vector.h" />
   </ItemGroup>
   <ItemGroup>

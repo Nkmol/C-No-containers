@@ -9,7 +9,6 @@ class Vector
 {
 	size_type used_;
 	size_type capacity_;
-	T* array_;
 
 	/// https://stackoverflow.com/questions/3279543/what-is-the-copy-and-swap-idiom
 	/// https://stackoverflow.com/questions/5695548/public-friend-swap-member-function
@@ -25,6 +24,8 @@ class Vector
 		swap(first.used_, second.used_);
 		swap(first.array_, second.array_);
 	}
+protected:
+	T* array_;
 public:
 	Vector(const size_type& cap);
 	Vector();

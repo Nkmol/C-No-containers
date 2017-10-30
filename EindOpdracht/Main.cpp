@@ -10,6 +10,7 @@
 #include "Product.h"
 #include "Cannon.h"
 #include "SailRoute.h"
+#include "String.h"
 
 
 std::stringstream standard_cout_stream(Player& player)
@@ -127,6 +128,19 @@ Vector<KeyValuePair<std::string, Vector<SailRoute>>> create_routes_adapter()
 
 int main(int argc, char* argv[])
 {
+	/*String t;
+	t.push_back('t');
+	t.push_back('e');
+	t.push_back('s');
+	t.push_back('t');
+
+	std::cout << t << std::endl;*/
+
+	String t = "test";
+	std::cout << t << std::endl;
+	std::cin.get();
+
+
 	// init randomizer by seed (seed is hardware coupled)
 	std::random_device rd;
 	std::mt19937 mt(rd());
@@ -189,7 +203,5 @@ int main(int argc, char* argv[])
 
 		std::cin.ignore();
 	}
-
-	std::cin.ignore();
 }
 
