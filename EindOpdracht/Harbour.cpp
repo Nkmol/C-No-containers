@@ -51,8 +51,7 @@ int Harbour::open_shop() const
 	std::cout << "[5]. Repair my boat (costs 1 gold for 10 damage points)" << std::endl;
 	std::cout << "[6]. Quit game" << std::endl;
 
-	int number;
-	std::cin >> number;
+	const auto number = Helper::request_int(1, 6);
 
 	return number;
 }
@@ -82,7 +81,7 @@ int Harbour::process_option(const int& option)
 	return -1;
 }
 
-int Harbour::open_harbour_list()
+int Harbour::open_harbour_list() const
 {
 	std::cout << "Choose a harbour you would like to sail to. " << std::endl;
 	std::cout << "Current: " << name_ << std::endl;
@@ -96,8 +95,7 @@ int Harbour::open_harbour_list()
 		}
 	}
 
-	int number;
-	std::cin >> number;
+	const auto number = Helper::request_int(0, adapter.used() - 1);
 
 	return number;
 }
@@ -112,19 +110,18 @@ void Harbour::open_cannons_shop()
 		std::cout << "[" << i << "]. " << cannon.get_type() << " [" << cannon.get_actual_amount() << "] = " << cannon.get_price() << std::endl;
 	}
 
-	int number;
-	std::cin >> number;
+	const auto number = Helper::request_int(0, adapter.used() - 1);
 
 	buy_cannon(number);
 }
 
-void Harbour::buy_cannon(int number)
+void Harbour::buy_cannon(int number) const
 {
 	auto& player_ship = player_->get_ship();
 	if (player_ship.cur_laadruimte() + 1 > player_ship.laadruimte())
 	{
 		std::cout << "It seems that your ship cannot carry any more goods. " << std::endl;
-		std::cin.ignore();
+		Helper::enter_continue();
 		return;
 	}
 
@@ -133,6 +130,7 @@ void Harbour::buy_cannon(int number)
 	if (adapter[number].get_actual_amount() <= 0)
 	{
 		std::cout << "Seems like this cannon is out of stock" << std::endl;
+		Helper::enter_continue();
 		return;
 	}
 
@@ -140,7 +138,7 @@ void Harbour::buy_cannon(int number)
 	{
 		std::cout << "You seem to be " << adapter[number].get_price() - player_->get_gold() << " gold off. Try again later."
 			<< std::endl;
-
+		Helper::enter_continue();
 		return;
 	}
 	
@@ -149,7 +147,7 @@ void Harbour::buy_cannon(int number)
 	adapter[number].reduce_actual_amount(1);
 }
 
-void Harbour::open_goods_shop()
+void Harbour::open_goods_shop() const
 {
 	std::cout << "Our goods: " << std::endl;
 
@@ -159,19 +157,18 @@ void Harbour::open_goods_shop()
 		std::cout << "[" << i << "]. " << adapter[i].get_name() << " = " << adapter[i].get_actual_cost() << std::endl;
 	}
 
-	int number;
-	std::cin >> number;
+	const auto number = Helper::request_int(0, adapter.used() - 1);
 
 	buy_good(number);
 }
 
-void Harbour::buy_good(int number)
+void Harbour::buy_good(int number) const
 {
 	auto& player_ship = player_->get_ship();
 	if (player_ship.cur_laadruimte() + 1 > player_ship.laadruimte())
 	{
 		std::cout << "It seems that your ship cannot carry any more goods. " << std::endl;
-		std::cin.ignore();
+		Helper::enter_continue();
 		return;
 	}
 
@@ -180,7 +177,7 @@ void Harbour::buy_good(int number)
 	{
 		std::cout << "You seem to be " << adapter[number].get_actual_cost() - player_->get_gold() << " gold off. Try again later."
 			<< std::endl;
-
+		Helper::enter_continue();
 		return;
 	}
 
@@ -188,7 +185,7 @@ void Harbour::buy_good(int number)
 	player_ship.add_good(1);
 }
 
-void Harbour::calculate_cannon_prices()
+void Harbour::calculate_cannon_prices() const
 {
 	auto& adapter = *adapter_cannons_;
 	for (int i = 0; i < adapter.used(); i++)
@@ -197,7 +194,7 @@ void Harbour::calculate_cannon_prices()
 	}
 }
 
-void Harbour::calculate_good_prices()
+void Harbour::calculate_good_prices() const
 {
 	auto& adapter = *adapter_goods_;
 	for (int i = 0; i < adapter.used(); i++)
@@ -208,8 +205,8 @@ void Harbour::calculate_good_prices()
 
 void Harbour::open_ship_shop() const
 {
-	std::cout << "type   " << "laadruimte   " << "kanonnen   " << "shadepunten   " << "bijzonderheden   " << "prijs   " <<
-		std::endl;
+	/*std::cout << "type   " << "laadruimte   " << "kanonnen   " << "shadepunten   " << "bijzonderheden   " << "prijs   " <<
+		std::endl;*/
 
 	auto& adapter = *adapter_ships_;
 	for (int i = 0; i < adapter.used(); i++)
@@ -217,10 +214,8 @@ void Harbour::open_ship_shop() const
 		std::cout << "[" << i << "]. " << adapter[i].key() << " = " << adapter[i].value() << std::endl;
 	}
 
-	int number;
-	std::cin >> number;
-	// Ignore enter press in cin buffer
-	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+	const auto number = Helper::request_int(0, adapter.used() - 1);
+
 	buy_ship(number);
 }
 
@@ -252,8 +247,7 @@ void Harbour::buy_ship(int ship_index) const
 	{
 		std::cout << "You seem to be " << ship_to_buy.value() - player_->get_gold() << " gold off. Try again later." << std::
 			endl;
-
-		std::cin.ignore();
+		Helper::enter_continue();
 		return;
 	}
 

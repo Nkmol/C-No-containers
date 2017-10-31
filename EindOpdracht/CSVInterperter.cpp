@@ -23,7 +23,7 @@ CSV_data_type CSVInterperter::create_columns(const FileHandler& handler)
 			}
 			else
 			{
-				auto line_data = create_line(values, headers);
+				const auto line_data = create_line(values, headers);
 				data.push_back(line_data);
 			}
 		}
@@ -42,7 +42,7 @@ Vector<KeyValuePair<String, String>> CSVInterperter::create_line(
 	Vector<KeyValuePair<String, String>> properties;
 	for (int i = 0; i < values.used(); i++)
 	{
-		KeyValuePair<String, String> kv{headers[i], values[i]};
+		const KeyValuePair<String, String> kv{headers[i], values[i]};
 		properties.push_back(kv);
 	}
 

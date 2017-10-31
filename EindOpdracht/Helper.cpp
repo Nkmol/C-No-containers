@@ -28,3 +28,38 @@ void Helper::search_for_delimeter(String to_serach, String delimeter, Vector<Str
 Helper::~Helper()
 {
 }
+
+int Helper::request_int(int min, int max)
+{
+	std::cout << std::endl;
+
+	int i;
+	for (;;) {
+		std::cout << "Please enter in your choice [" << min << " - " << max << "] : ";
+		if (std::cin >> i) {
+			if(i >= min && i <= max) 
+				break;
+			else
+			{
+				std::cout << "Please enter a value that is in range." << std::endl;
+				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); std::cin.clear();
+			}
+		}
+		else {
+			std::cout << "Please enter a valid integer" << std::endl;
+			std::cin.clear();
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+		}
+	}
+	
+	// Ignore "leaked"  space
+	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+	return i;
+}
+
+void Helper::enter_continue()
+{
+	std::cout << "Press enter to continue..." << std::endl;
+	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+}

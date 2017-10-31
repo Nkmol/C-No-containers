@@ -1,6 +1,7 @@
 #include "SailRoute.h"
 #include <random>
 #include <random>
+#include "Helper.h"
 
 
 SailRoute::SailRoute() : SailRoute("", "", 0)
