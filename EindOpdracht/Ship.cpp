@@ -20,6 +20,11 @@ Ship::Ship(const String& naam, int laadruimte, int kanonnen, int shadepunten, co
 	}
 }
 
+Ship::~Ship()
+{
+	
+}
+
 bool Ship::operator==(const Ship& b) const
 {
 	auto* pntr_a = this;

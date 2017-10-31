@@ -13,6 +13,7 @@ class Ship
 public:
 	Ship();
 	Ship(const String& naam, int laadruimte, int kanonnen, int shadepunten, const String& bijzonderheden);
+	~Ship();
 	bool operator==(const Ship& b) const;
 	const String& name() const;
 	const int& laadruimte() const;

@@ -12,6 +12,10 @@
 #include "SailRoute.h"
 #include "String.h"
 
+#define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
+
 
 std::stringstream standard_cout_stream(Player& player)
 {
@@ -130,7 +134,8 @@ Vector<KeyValuePair<String, Vector<SailRoute>>> create_routes_adapter()
 	return adapter;
 }
 
-int main(int argc, char* argv[])
+// Encapsulate for memory leak detector
+void run_program()
 {
 	// init randomizer by seed (seed is hardware coupled)
 	std::random_device rd;
@@ -139,7 +144,7 @@ int main(int argc, char* argv[])
 	// ~ init ~
 	// Create player with random amount of money (10000 to 20000)
 	const std::uniform_int_distribution<int> dist_gold(10000, 20000);
-	Player player{dist_gold(mt)};
+	Player player{ dist_gold(mt) };
 
 	// After construction, the adapter should not be modified
 	const auto adapter_ships = create_ship_shop_adapter();
@@ -154,22 +159,22 @@ int main(int argc, char* argv[])
 		// link routes and goods (by harbour name from one of the lists)
 		// TODO better to intialize independently
 		const Vector<SailRoute>* adapter_routes_harbour = nullptr;
-		for(int j = 0; i < adapter_routes.used(); i++)
+		for (int j = 0; i < adapter_routes.used(); i++)
 		{
 			// Same harbour
-			if(adapter_routes[i].key() == adapter_goods[i].key())
+			if (adapter_routes[i].key() == adapter_goods[i].key())
 			{
 				adapter_routes_harbour = &adapter_routes[i].value();
 				break;
 			}
 		}
 
-		const Harbour h { &adapter_ships, &adapter_goods[i].value(), &adapter_cannons, adapter_routes_harbour, &mt, adapter_goods[i].key() };
+		const Harbour h{ &adapter_ships, &adapter_goods[i].value(), &adapter_cannons, adapter_routes_harbour, &mt, adapter_goods[i].key() };
 		harbours.push_back(h);
 	}
-	
+
 	// Choose one of the harbors
-	auto& r_harbour = harbours[std::uniform_int_distribution<int> (0, harbours.used())(mt)];
+	auto& r_harbour = harbours[std::uniform_int_distribution<int>(0, harbours.used())(mt)];
 	r_harbour.enter_shop(&player);
 
 	// First buy a ship
@@ -188,7 +193,7 @@ int main(int argc, char* argv[])
 		std::cout << standard_cout_stream(player).str();
 		const int option_sub = r_harbour.process_option(option);
 
-		if(option == 4)
+		if (option == 4)
 		{
 			// Simulate sailing
 			auto route = r_harbour.get_route(option_sub);
@@ -203,11 +208,11 @@ int main(int argc, char* argv[])
 				std::cin.clear();
 				std::cin.ignore();
 			}
-			
+
 			// Get "to"-harbour
-			for(int i =0; i < harbours.used(); i++)
+			for (int i = 0; i < harbours.used(); i++)
 			{
-				if(harbours[i].get_name() == route.to())
+				if (harbours[i].get_name() == route.to())
 				{
 					r_harbour.leave();
 					r_harbour = harbours[i];
@@ -216,7 +221,20 @@ int main(int argc, char* argv[])
 			}
 		}
 
+		if (option == 6)
+		{
+			break;
+		}
+
 		std::cin.ignore();
 	}
+}
+
+int main(int argc, char* argv[])
+{
+	run_program();
+
+	_CrtDumpMemoryLeaks();
+	return 0;
 }
 
