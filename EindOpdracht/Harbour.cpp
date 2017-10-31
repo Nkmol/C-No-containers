@@ -73,12 +73,33 @@ int Harbour::process_option(const int& option)
 		return open_harbour_list();
 		break;
 	case 5:
+		repair();
 	case 6:
 	default:
 		break;
 	}
 
 	return -1;
+}
+
+void Harbour::repair()
+{
+	if (1 > player_->get_gold())
+	{
+		std::cout << "You don't have enough gold for a simple repair?" << std::endl;
+		Helper::enter_continue();
+		return;
+	}
+
+	if (player_->get_ship().cur_shadepunten() == 0)
+	{
+		std::cout << "Your ship is already fully repaired." << std::endl;
+		Helper::enter_continue();
+		return;
+	}
+
+	player_->decrease_gold(1);
+	player_->get_ship().repair(10);
 }
 
 int Harbour::open_harbour_list() const

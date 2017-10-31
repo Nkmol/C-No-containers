@@ -35,6 +35,7 @@ public:
 	const SailRoute& get_route(int index) const;
 	int open_shop() const;
 	int process_option(const int& option);
+	void repair();
 	int open_harbour_list() const;
 	void open_cannons_shop();
 	void buy_cannon(int number) const;

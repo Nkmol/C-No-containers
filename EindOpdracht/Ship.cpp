@@ -6,7 +6,7 @@ Ship::Ship(): Ship("", 0, 0, 0, "")
 }
 
 Ship::Ship(const String& naam, int laadruimte, int kanonnen, int shadepunten, const String& bijzonderheden)
-	: shadepunten_{ shadepunten }, laadruimte_{ laadruimte }, kanonnen_{ kanonnen }, naam_{ naam }, cur_laadruimte_ { 0 }
+	: max_shadepunten_{ shadepunten }, laadruimte_{ laadruimte }, kanonnen_{ kanonnen }, naam_{ naam }, cur_laadruimte_ { 0 }, cur_shadepunten_{0}
 {
 	if(bijzonderheden != "")
 	{
@@ -53,14 +53,26 @@ const int& Ship::kanonnen() const
 	return kanonnen_;
 }
 
-const int& Ship::shadepunten() const
+const int& Ship::max_shadepunten() const
 {
-	return shadepunten_;
+	return max_shadepunten_;
+}
+
+const int& Ship::cur_shadepunten() const
+{
+	return cur_shadepunten_;
 }
 
 void Ship::damage(const int& value)
 {
-	shadepunten_ -= value;
+	cur_shadepunten_ += value;
+}
+
+void Ship::repair(const int& value)
+{
+	cur_shadepunten_ -= value;
+	if (cur_shadepunten_ < 0)
+		cur_shadepunten_ = 0;
 }
 
 const Vector<String>& Ship::bijzonderheden() const
@@ -71,6 +83,11 @@ const Vector<String>& Ship::bijzonderheden() const
 const int& Ship::add_good(int value) const
 {
 	return cur_laadruimte_ += value;
+}
+
+bool Ship::sank() const
+{
+	return cur_shadepunten_ >= max_shadepunten_;
 }
 
 bool Ship::has_speciality(const String& value) const

@@ -102,7 +102,7 @@ void run_program()
 
 				std::cin.ignore();
 
-				if(player.get_ship().shadepunten() <= 0)
+				if(player.get_ship().sank())
 				{
 					std::cout << "Your ship has been destroyed, thus lost the game" << std::endl;
 					Helper::enter_continue();

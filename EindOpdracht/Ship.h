@@ -4,7 +4,9 @@
 
 class Ship
 {
-	int shadepunten_;
+	int max_shadepunten_;
+	int cur_shadepunten_;
+
 	int laadruimte_;
 	int kanonnen_;
 	String naam_;
@@ -19,16 +21,19 @@ public:
 	const int& laadruimte() const;
 	const int& cur_laadruimte() const;
 	const int& kanonnen() const;
-	const int& shadepunten() const;
+	const int& max_shadepunten() const;
+	const int& cur_shadepunten() const;
 	void damage(const int& value);
+	void repair(const int& value);
 	const Vector<String>& bijzonderheden() const;
 	const int& add_good(int value) const;
+	bool sank() const;
 	bool has_speciality(const String& value) const;
 };
 
 // https://stackoverflow.com/questions/5171739/tostring-override-in-c
 inline std::ostream & operator<<(std::ostream & Str, Ship const & v) {
-	Str << v.name() << "   Cargo: " << v.cur_laadruimte() << "/" << v.laadruimte() << "   Cannons: " << v.kanonnen() << "   Health: " << v.shadepunten() << "   ";
+	Str << v.name() << "   Cargo: " << v.cur_laadruimte() << "/" << v.laadruimte() << "   Cannons: " << v.kanonnen() << "   Damaged: " << v.cur_shadepunten() << "/" << v.max_shadepunten()  << "   ";
 	
 	// TODO can be replaced by "<<" operator of Vector<T>
 	for (int i = 0; i < v.bijzonderheden().used(); i++)
