@@ -6,14 +6,15 @@ Ship::Ship(): Ship("", 0, 0, 0, "")
 }
 
 Ship::Ship(const String& naam, int laadruimte, int kanonnen, int shadepunten, const String& bijzonderheden)
-	: max_shadepunten_{ shadepunten }, laadruimte_{ laadruimte }, kanonnen_{ kanonnen }, naam_{ naam }, cur_laadruimte_ { 0 }, cur_shadepunten_{0}
+	: max_shadepunten_{shadepunten}, cur_shadepunten_{0}, laadruimte_{laadruimte}, kanonnen_{kanonnen}, naam_{naam},
+	  cur_laadruimte_ {0}
 {
-	if(bijzonderheden != "")
+	if (bijzonderheden != "")
 	{
 		Helper::search_for_delimeter(bijzonderheden, ",", bijzonderheden_);
 
 		// Remove whitespace
-		for(auto i = 0; i < bijzonderheden_.used(); i++)
+		for (auto i = 0; i < bijzonderheden_.used(); i++)
 		{
 			bijzonderheden_[i].remove_spaces();
 		}
@@ -22,7 +23,6 @@ Ship::Ship(const String& naam, int laadruimte, int kanonnen, int shadepunten, co
 
 Ship::~Ship()
 {
-	
 }
 
 bool Ship::operator==(const Ship& b) const
@@ -93,10 +93,10 @@ bool Ship::sank() const
 bool Ship::has_speciality(const String& value) const
 {
 	auto result = false;
-	for(int i = 0; i < bijzonderheden_.used(); i++)
+	for (int i = 0; i < bijzonderheden_.used(); i++)
 	{
 		const auto check = bijzonderheden_[i];
-		if(check == value)
+		if (check == value)
 		{
 			result = true;
 			break;

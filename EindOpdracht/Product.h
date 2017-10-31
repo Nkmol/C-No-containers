@@ -17,4 +17,3 @@ public:
 	const String& get_name() const;
 	const int& get_actual_cost() const;
 };
-

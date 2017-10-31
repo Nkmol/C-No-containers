@@ -26,8 +26,7 @@ public:
 };
 
 
-
-inline std::ostream & operator<<(std::ostream & str, String const & v) 
+inline std::ostream& operator<<(std::ostream& str, String const& v)
 {
 	for (int i = 0; i < v.used(); i++)
 	{
@@ -59,7 +58,7 @@ inline String::operator char*() const
 
 inline bool String::operator==(const char* value) const
 {
-	for(int i = 0; i < used_; i++)
+	for (int i = 0; i < used_; i++)
 	{
 		if (array_[i] != value[i])
 			return false;
@@ -138,7 +137,7 @@ inline size_t String::find(char* s, size_t pos = 0) const
 	size_t result = npos;
 	for (size_t i = 0; i < used_; i++)
 	{
-		if(array_[i] == *s)
+		if (array_[i] == *s)
 		{
 			result = i;
 			break;
@@ -155,4 +154,3 @@ inline int String::stoi(String value)
 
 	return i;
 }
-

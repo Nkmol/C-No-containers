@@ -20,4 +20,3 @@ public:
 	void reduce_actual_amount(const int& value) const;
 	const int& get_price() const;
 };
-

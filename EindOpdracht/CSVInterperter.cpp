@@ -3,7 +3,7 @@
 #include "Helper.h"
 #include "String.h"
 
-const String CSVInterperter::delimiter_ = ";";
+const String CSVInterperter::delimiter = ";";
 const String CSVInterperter::ignore = "#";
 
 CSV_data_type CSVInterperter::create_columns(const FileHandler& handler)
@@ -13,7 +13,7 @@ CSV_data_type CSVInterperter::create_columns(const FileHandler& handler)
 	for (size_t i = 0; i < handler.size(); i++)
 	{
 		const auto& line = handler[i];
-		Vector<String> values = process_line(line);
+		auto values = process_line(line);
 
 		if (values.used() > 0)
 		{
@@ -59,7 +59,7 @@ Vector<String> CSVInterperter::process_line(String line)
 		return values;
 	}
 
-	Helper::search_for_delimeter(line, delimiter_, values);
+	Helper::search_for_delimeter(line, delimiter, values);
 
 	return values;
 }

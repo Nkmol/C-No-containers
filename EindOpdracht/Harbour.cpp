@@ -22,7 +22,6 @@ Harbour::Harbour(const ships_shop_datatype* ships, const goods_shop_datatype* go
 // Only used for vector allocation
 Harbour::Harbour() : Harbour(nullptr, nullptr, nullptr, nullptr, nullptr, "")
 {
-	
 }
 
 Harbour::~Harbour()
@@ -111,7 +110,8 @@ int Harbour::open_harbour_list() const
 	for (int i = 0; i < adapter.used(); i++)
 	{
 		auto& route = adapter[i];
-		if (route.to() != name_) {
+		if (route.to() != name_)
+		{
 			std::cout << "[" << i << "]. " << route.to() << " in " << route.turns() << " turns." << std::endl;
 		}
 	}
@@ -128,7 +128,8 @@ void Harbour::open_cannons_shop()
 	for (int i = 0; i < adapter.used(); i++)
 	{
 		auto& cannon = adapter[i];
-		std::cout << "[" << i << "]. " << cannon.get_type() << " [" << cannon.get_actual_amount() << "] = " << cannon.get_price() << std::endl;
+		std::cout << "[" << i << "]. " << cannon.get_type() << " [" << cannon.get_actual_amount() << "] = " << cannon.
+			get_price() << std::endl;
 	}
 
 	const auto number = Helper::request_int(0, adapter.used() - 1);
@@ -162,7 +163,7 @@ void Harbour::buy_cannon(int number) const
 		Helper::enter_continue();
 		return;
 	}
-	
+
 	player_->decrease_gold(adapter[number].get_price());
 	player_ship.add_good(1);
 	adapter[number].reduce_actual_amount(1);
@@ -196,7 +197,8 @@ void Harbour::buy_good(int number) const
 	auto& adapter = *adapter_goods_;
 	if (adapter[number].get_actual_cost() > player_->get_gold())
 	{
-		std::cout << "You seem to be " << adapter[number].get_actual_cost() - player_->get_gold() << " gold off. Try again later."
+		std::cout << "You seem to be " << adapter[number].get_actual_cost() - player_->get_gold() <<
+			" gold off. Try again later."
 			<< std::endl;
 		Helper::enter_continue();
 		return;
@@ -275,7 +277,7 @@ void Harbour::buy_ship(int ship_index) const
 	// if player has ship, sell at 50%
 	if (player_->has_ship())
 	{
-		const int& price = get_ship_price(player_->get_ship());
+		const auto& price = get_ship_price(player_->get_ship());
 		player_->increase_gold(price * 0.5);
 	}
 

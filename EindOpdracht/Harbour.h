@@ -25,10 +25,12 @@ class Harbour
 
 	String name_;
 public:
-	Harbour(const ships_shop_datatype* ships, const goods_shop_datatype* goods, const cannons_shop_datatype* cannons, const routes_datatype* routes,
-		std::mt19937* random, Player* player, const String& name);
-	Harbour(const ships_shop_datatype* ships, const goods_shop_datatype* goods, const cannons_shop_datatype* cannons, const routes_datatype* routes,
-		std::mt19937* random, const String& name);
+	Harbour(const ships_shop_datatype* ships, const goods_shop_datatype* goods, const cannons_shop_datatype* cannons,
+	        const routes_datatype* routes,
+	        std::mt19937* random, Player* player, const String& name);
+	Harbour(const ships_shop_datatype* ships, const goods_shop_datatype* goods, const cannons_shop_datatype* cannons,
+	        const routes_datatype* routes,
+	        std::mt19937* random, const String& name);
 	Harbour();
 	~Harbour();
 	void enter_shop(Player* player);

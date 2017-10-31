@@ -21,6 +21,7 @@ class Vector
 		swap(first.used_, second.used_);
 		swap(first.array_, second.array_);
 	}
+
 protected:
 	T* array_;
 	size_type used_;
@@ -45,7 +46,6 @@ public:
 template <typename T>
 Vector<T>::Vector(const size_type& cap) : array_{new T[cap]}, used_{0}, capacity_{cap}
 {
-	
 }
 
 template <typename T>
@@ -53,7 +53,7 @@ Vector<T>::Vector() noexcept : Vector(0)
 {
 }
 
-#pragma region Rule of five  
+#pragma region Rule of five
 template <typename T>
 Vector<T>::~Vector()
 {
@@ -61,7 +61,8 @@ Vector<T>::~Vector()
 }
 
 template <typename T>
-Vector<T>::Vector(const Vector<T>& other) : array_{ new T[other.capacity_] }, used_{ other.used_ }, capacity_{ other.capacity_ }
+Vector<T>::Vector(const Vector<T>& other) : array_{new T[other.capacity_]}, used_{other.used_},
+                                            capacity_{other.capacity_}
 {
 	// Copy data
 	// std::copy is marked as unsafe by vsc++
@@ -97,7 +98,7 @@ Vector<T>& Vector<T>::operator=(Vector<T>&& that) noexcept
 	return *this;
 }
 
-#pragma endregion Rule of five  
+#pragma endregion Rule of five
 
 template <typename T>
 const int& Vector<T>::capcity() const noexcept

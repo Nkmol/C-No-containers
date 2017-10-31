@@ -38,7 +38,7 @@ Vector<KeyValuePair<Ship, int>> AdapterRepositories::create_ship_shop_adapter()
 			line[5].value()
 		};
 
-		const KeyValuePair<Ship, int> kv{ ship, String::stoi(line[1].value()) };
+		const KeyValuePair<Ship, int> kv{ship, String::stoi(line[1].value())};
 
 		ship_shop_adapter.push_back(kv);
 	}
@@ -69,11 +69,11 @@ Vector<KeyValuePair<String, Vector<Product>>> AdapterRepositories::create_goods_
 				continue;
 			}
 
-			Product p{ value.key(), value.value() };
+			Product p{value.key(), value.value()};
 			goods.push_back(p);
 		}
 
-		KeyValuePair<String, Vector<Product>> kv{ city, goods };
+		KeyValuePair<String, Vector<Product>> kv{city, goods};
 		goods_adapter.push_back(kv);
 	}
 
@@ -84,9 +84,9 @@ Vector<Cannon> AdapterRepositories::create_cannons_adapter()
 {
 	Vector<Cannon> result;
 
-	result.push_back(Cannon{ "light", "0-5", 50 });
-	result.push_back(Cannon{ "medium", "0-3", 200 });
-	result.push_back(Cannon{ "heavy", "0-2", 1000 });
+	result.push_back(Cannon{"light", "0-5", 50});
+	result.push_back(Cannon{"medium", "0-3", 200});
+	result.push_back(Cannon{"heavy", "0-2", 1000});
 
 	return result;
 }
@@ -113,11 +113,11 @@ Vector<KeyValuePair<String, Vector<SailRoute>>> AdapterRepositories::create_rout
 				continue;
 			}
 
-			const SailRoute r{ from, value.key(), String::stoi(value.value()) };
+			const SailRoute r{from, value.key(), String::stoi(value.value())};
 			routes.push_back(r);
 		}
 
-		const KeyValuePair<String, Vector<SailRoute>> kv{ from, routes };
+		const KeyValuePair<String, Vector<SailRoute>> kv{from, routes};
 		adapter.push_back(kv);
 	}
 

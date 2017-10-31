@@ -38,7 +38,7 @@ void SailRoute::sail(const Player& player, std::mt19937& random)
 
 	Ship& ship = player.get_ship();
 
-	if(random_int >= 1 && random_int <= 2 )
+	if (random_int >= 1 && random_int <= 2)
 	{
 		std::cout << "Wind status: No wind" << std::endl;
 		not_moved();
@@ -46,7 +46,7 @@ void SailRoute::sail(const Player& player, std::mt19937& random)
 	else if (random_int >= 3 && random_int <= 4)
 	{
 		std::cout << "Wind status: Light breeze" << std::endl;
-		if(ship.has_speciality("licht"))
+		if (ship.has_speciality("licht"))
 		{
 			normal_wind();
 		}
@@ -85,12 +85,12 @@ void SailRoute::sail(const Player& player, std::mt19937& random)
 		const std::uniform_int_distribution<int> dist_storm_event(1, 100);
 		const int storm_event = dist_storm_event(random);
 
-		if(storm_event <= 40)
+		if (storm_event <= 40)
 		{
 			std::cout << "The storm has blown you off course. You loose 1 turn." << std::endl;
 			turns_++;
 		}
-		else if(storm_event > 40 && storm_event <= 80)
+		else if (storm_event > 40 && storm_event <= 80)
 		{
 			std::cout << "Because of the storm you have not moved any turn closer to your destination." << std::endl;
 		}

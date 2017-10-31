@@ -15,4 +15,3 @@ public:
 	static Vector<Cannon> create_cannons_adapter();
 	static Vector<KeyValuePair<String, Vector<SailRoute>>> create_routes_adapter();
 };
-

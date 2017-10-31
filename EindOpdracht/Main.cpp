@@ -39,7 +39,7 @@ void run_program()
 	// ~ init ~
 	// Create player with random amount of money (10000 to 20000)
 	const std::uniform_int_distribution<int> dist_gold(10000, 20000);
-	Player player{ dist_gold(mt) };
+	Player player{dist_gold(mt)};
 
 	// After construction, the adapter should not be modified
 	const auto adapter_ships = AdapterRepositories::create_ship_shop_adapter();
@@ -64,7 +64,9 @@ void run_program()
 			}
 		}
 
-		const Harbour h{ &adapter_ships, &adapter_goods[i].value(), &adapter_cannons, adapter_routes_harbour, &mt, adapter_goods[i].key() };
+		const Harbour h{
+			&adapter_ships, &adapter_goods[i].value(), &adapter_cannons, adapter_routes_harbour, &mt, adapter_goods[i].key()
+		};
 		harbours.push_back(h);
 	}
 
@@ -73,7 +75,8 @@ void run_program()
 	r_harbour.enter_shop(&player);
 
 	// First buy a ship
-	while (!player.has_ship()) {
+	while (!player.has_ship())
+	{
 		std::cout << standard_cout_stream(player).str();
 		std::cout << "First, get yourself a worthy ship" << std::endl;
 
@@ -102,7 +105,7 @@ void run_program()
 
 				std::cin.ignore();
 
-				if(player.get_ship().sank())
+				if (player.get_ship().sank())
 				{
 					std::cout << "Your ship has been destroyed, thus lost the game" << std::endl;
 					Helper::enter_continue();
@@ -138,4 +141,3 @@ int main(int argc, char* argv[])
 	_CrtDumpMemoryLeaks();
 	return 0;
 }
-

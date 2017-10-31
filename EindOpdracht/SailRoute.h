@@ -15,8 +15,7 @@ public:
 	const String& from() const;
 	const String& to() const;
 	const int& turns() const;
-	void sail(const ::Player& player, std::mt19937& random);
+	void sail(const Player& player, std::mt19937& random);
 	void not_moved() const;
 	void normal_wind();
 };
-

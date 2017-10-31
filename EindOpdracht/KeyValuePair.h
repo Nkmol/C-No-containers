@@ -36,7 +36,7 @@ KeyValuePair<KEY, VALUE>::KeyValuePair() : KeyValuePair(KEY{}, VALUE{})
 {
 }
 
-#pragma region Rule of five  
+#pragma region Rule of five
 template <typename KEY, typename VALUE>
 KeyValuePair<KEY, VALUE>::~KeyValuePair()
 {
@@ -44,7 +44,7 @@ KeyValuePair<KEY, VALUE>::~KeyValuePair()
 
 // Copy constructor
 template <typename KEY, typename VALUE>
-KeyValuePair<KEY, VALUE>::KeyValuePair(const KeyValuePair<KEY, VALUE>& other) : KeyValuePair(other.key_ , other.value_)
+KeyValuePair<KEY, VALUE>::KeyValuePair(const KeyValuePair<KEY, VALUE>& other) : KeyValuePair(other.key_, other.value_)
 {
 }
 
@@ -72,7 +72,7 @@ KeyValuePair<KEY, VALUE>& KeyValuePair<KEY, VALUE>::operator=(KeyValuePair<KEY, 
 	return *this;
 }
 
-#pragma endregion  Rule of five 
+#pragma endregion  Rule of five
 
 template <typename KEY, typename VALUE>
 const KEY& KeyValuePair<KEY, VALUE>::key() const

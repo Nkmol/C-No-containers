@@ -11,4 +11,3 @@ public:
 	static int request_int(int min, int max);
 	static void enter_continue();
 };
-

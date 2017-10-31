@@ -1,13 +1,12 @@
 #include "Player.h"
 
 
-
 Player::Player() : Player(0)
 {
 }
 
 // Right way of initalizing empty object?
-Player::Player(int gold) : gold_{gold}, ship_( Ship{} )
+Player::Player(int gold) : gold_{gold}, ship_(Ship{})
 {
 }
 
@@ -26,7 +25,7 @@ Ship& Player::get_ship() const
 	return ship_;
 }
 
-void Player::set_ship(Ship ship)
+void Player::set_ship(Ship ship) const
 {
 	ship_ = ship;
 }
@@ -45,4 +44,3 @@ bool Player::has_ship() const
 {
 	return ship_.name() != "";
 }
-
