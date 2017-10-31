@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "String.h"
 #include "Vector.h"
 
@@ -11,7 +11,6 @@ class Ship
 	Vector<String> bijzonderheden_;
 	mutable int cur_laadruimte_;
 public:
-	static const Ship empty_ship;
 	Ship();
 	Ship(const String& naam, int laadruimte, int kanonnen, int shadepunten, const String& bijzonderheden);
 	bool operator==(const Ship& b) const;
@@ -28,7 +27,7 @@ public:
 
 // https://stackoverflow.com/questions/5171739/tostring-override-in-c
 inline std::ostream & operator<<(std::ostream & Str, Ship const & v) {
-	Str << v.name() << "   " << v.cur_laadruimte() << "/" << v.laadruimte() << "   " << v.kanonnen() << "   " << v.shadepunten() << "   ";
+	Str << v.name() << "   Cargo: " << v.cur_laadruimte() << "/" << v.laadruimte() << "   Cannons: " << v.kanonnen() << "   Health: " << v.shadepunten() << "   ";
 	
 	// TODO can be replaced by "<<" operator of Vector<T>
 	for (int i = 0; i < v.bijzonderheden().used(); i++)

@@ -5,14 +5,14 @@ class Player
 {
 	int gold_;
 
-	// I can now change the actual ship, but I am not allowed to call non-const functions of the ship (for example `(*ship_).name = "new name"`)
-	mutable const Ship* ship_;
+	mutable Ship ship_;
 public:
 	Player();
 	explicit Player(int gold);
 	const int& get_gold() const;
-	const Ship& get_ship() const;
-	void set_ship(const Ship& ship) const;
+	Ship& get_ship();
+	Ship& get_ship() const;
+	void set_ship(Ship ship);
 	void decrease_gold(const int value);
 	bool has_ship() const;
 	void increase_gold(const int value);

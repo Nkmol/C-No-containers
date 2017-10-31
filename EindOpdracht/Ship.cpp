@@ -1,9 +1,7 @@
 #include "Ship.h"
 #include "Helper.h"
 
-const Ship Ship::empty_ship("empty", 0, 0, 0, "");
-
-Ship::Ship(): Ship{ empty_ship }
+Ship::Ship(): Ship("", 0, 0, 0, "")
 {
 }
 

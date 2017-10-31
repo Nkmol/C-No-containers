@@ -18,7 +18,7 @@ std::stringstream standard_cout_stream(Player& player)
 	std::stringstream buffer;
 	system("cls");
 	buffer << player << std::endl;
-	std::cout << std::endl;
+	buffer << std::endl;
 
 	return buffer;
 }
@@ -209,7 +209,9 @@ int main(int argc, char* argv[])
 			{
 				if(harbours[i].get_name() == route.to())
 				{
+					r_harbour.leave();
 					r_harbour = harbours[i];
+					r_harbour.enter_shop(&player);
 				}
 			}
 		}

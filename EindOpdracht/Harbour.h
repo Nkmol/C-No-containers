@@ -47,4 +47,5 @@ public:
 	void buy_ship(int ship_index) const;
 	const String& get_name() const;
 	void set_name(const String& name);
+	void leave();
 };

@@ -7,7 +7,7 @@ Player::Player() : Player(0)
 }
 
 // Right way of initalizing empty object?
-Player::Player(int gold) : gold_{ gold }, ship_{ &Ship::empty_ship }
+Player::Player(int gold) : gold_{gold}, ship_( Ship{} )
 {
 }
 
@@ -16,14 +16,19 @@ const int& Player::get_gold() const
 	return gold_;
 }
 
-const Ship& Player::get_ship() const
+Ship& Player::get_ship()
 {
-	return *ship_;
+	return ship_;
 }
 
-void Player::set_ship(const Ship& ship) const
+Ship& Player::get_ship() const
 {
-	ship_ = &ship;
+	return ship_;
+}
+
+void Player::set_ship(Ship ship)
+{
+	ship_ = ship;
 }
 
 void Player::decrease_gold(const int value)
@@ -38,6 +43,6 @@ void Player::increase_gold(const int value)
 
 bool Player::has_ship() const
 {
-	return !(ship_ == &Ship::empty_ship);
+	return ship_.name() != "";
 }
 

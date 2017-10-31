@@ -243,7 +243,7 @@ void Harbour::buy_ship(int ship_index) const
 	if (ship_index < 0) return;
 
 	auto& adapter = *adapter_ships_;
-	const auto& ship_to_buy = adapter[ship_index];
+	auto& ship_to_buy = adapter[ship_index];
 	const auto& name = ship_to_buy.key().name();
 
 	std::cout << "Buying Ship \"" << name << "\"" << std::endl;
@@ -265,6 +265,8 @@ void Harbour::buy_ship(int ship_index) const
 	}
 
 	player_->decrease_gold(ship_to_buy.value());
+
+	// Copy of adapter value
 	player_->set_ship(ship_to_buy.key());
 }
 
@@ -276,4 +278,9 @@ const String& Harbour::get_name() const
 void Harbour::set_name(const String& name)
 {
 	name_ = name;
+}
+
+void Harbour::leave()
+{
+	player_ = nullptr;
 }

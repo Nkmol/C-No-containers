@@ -35,7 +35,7 @@ void SailRoute::sail(const Player& player, std::mt19937& random)
 	const std::uniform_int_distribution<int> dist_int(1, 20);
 	const int random_int = dist_int(random);
 
-	Ship ship = player.get_ship();
+	Ship& ship = player.get_ship();
 
 	if(random_int >= 1 && random_int <= 2 )
 	{
@@ -100,7 +100,7 @@ void SailRoute::sail(const Player& player, std::mt19937& random)
 		}
 
 		const std::uniform_int_distribution<int> dist_damage(1, 100);
-		int damage = dist_damage(random);
+		const int damage = dist_damage(random);
 
 		std::cout << "Because of the storm, your ship has been damaged with a value of " << damage << std::endl;
 		ship.damage(damage);
