@@ -37,10 +37,14 @@ Vector<KeyValuePair<Ship, int>> create_ship_shop_adapter()
 	{
 		const auto line = result[i];
 		const Ship ship {
-			line[0].value(), String::stoi(static_cast<char*>(line[2].value())), String::stoi(static_cast<char*>(line[3].value())), String::stoi(static_cast<char*>(line[4].value())), line[5].value()
+			line[0].value(), 
+			String::stoi(line[2].value()), 
+			String::stoi(line[3].value()), 
+			String::stoi(line[4].value()), 
+			line[5].value()
 		};
 
-		const KeyValuePair<Ship, int> kv{ ship, String::stoi(static_cast<char*>(line[1].value())) };
+		const KeyValuePair<Ship, int> kv{ ship, String::stoi(line[1].value()) };
 
 		ship_shop_adapter.push_back(kv);
 	}
@@ -115,11 +119,11 @@ Vector<KeyValuePair<String, Vector<SailRoute>>> create_routes_adapter()
 				continue;
 			}
 
-			SailRoute r{ from, value.key(), String::String::stoi(static_cast<char*>(value.value())) };
+			const SailRoute r{ from, value.key(), String::stoi(value.value()) };
 			routes.push_back(r);
 		}
 
-		KeyValuePair<String, Vector<SailRoute>> kv { from, routes };
+		const KeyValuePair<String, Vector<SailRoute>> kv { from, routes };
 		adapter.push_back(kv);
 	}
 
@@ -164,6 +168,7 @@ int main(int argc, char* argv[])
 		harbours.push_back(h);
 	}
 	
+	// Choose one of the harbors
 	auto& r_harbour = harbours[std::uniform_int_distribution<int> (0, harbours.used())(mt)];
 	r_harbour.enter_shop(&player);
 
@@ -186,6 +191,27 @@ int main(int argc, char* argv[])
 		if(option == 4)
 		{
 			// Simulate sailing
+			auto route = r_harbour.get_route(option_sub);
+
+			system("cls");
+			while (route.turns() > 0)
+			{
+				std::cout << "Only " << route.turns() << " turns to go until you have arrived at " << route.to() << std::endl;
+
+				route.sail(player, mt);
+
+				std::cin.clear();
+				std::cin.ignore();
+			}
+			
+			// Get "to"-harbour
+			for(int i =0; i < harbours.used(); i++)
+			{
+				if(harbours[i].get_name() == route.to())
+				{
+					r_harbour = harbours[i];
+				}
+			}
 		}
 
 		std::cin.ignore();

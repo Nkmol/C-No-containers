@@ -11,7 +11,7 @@ public:
 	KeyValuePair(const KeyValuePair<KEY, VALUE>& other);
 	KeyValuePair(KeyValuePair<KEY, VALUE>&& other) noexcept;
 	KeyValuePair<KEY, VALUE>& operator=(KeyValuePair<KEY, VALUE> that);
-	KeyValuePair<KEY, VALUE>& operator=(KeyValuePair<KEY, VALUE>&& that);
+	KeyValuePair<KEY, VALUE>& operator=(KeyValuePair<KEY, VALUE>&& that) noexcept;
 	const KEY& key() const;
 	const VALUE& value() const;
 
@@ -66,7 +66,7 @@ KeyValuePair<KEY, VALUE>& KeyValuePair<KEY, VALUE>::operator=(KeyValuePair<KEY, 
 
 // Move assignment
 template <typename KEY, typename VALUE>
-KeyValuePair<KEY, VALUE>& KeyValuePair<KEY, VALUE>::operator=(KeyValuePair<KEY, VALUE>&& that)
+KeyValuePair<KEY, VALUE>& KeyValuePair<KEY, VALUE>::operator=(KeyValuePair<KEY, VALUE>&& that) noexcept
 {
 	swap(*this, that);
 	return *this;

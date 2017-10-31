@@ -11,8 +11,8 @@ Product::Product(const String& name, const String& costs_span) : acutal_cost_{0}
 		Vector<String> r;
 		Helper::search_for_delimeter(costs_span, "-", r);
 
-		min_ = String::String::stoi(r[0]);
-		max_ = String::String::stoi(r[1]);
+		min_ = String::stoi(r[0]);
+		max_ = String::stoi(r[1]);
 	}
 }
  

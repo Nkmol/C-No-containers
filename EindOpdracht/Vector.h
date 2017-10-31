@@ -9,7 +9,7 @@ class Vector
 {
 	/// https://stackoverflow.com/questions/3279543/what-is-the-copy-and-swap-idiom
 	/// https://stackoverflow.com/questions/5695548/public-friend-swap-member-function
-	friend void swap(Vector<T>& first, Vector<T>& second) noexcept //nothrow
+	friend void swap(Vector<T>& first, Vector<T>& second) noexcept
 	{
 		// enable ADL (not necessary in our case, but good practice)
 		/// https://stackoverflow.com/questions/28130671/how-does-using-stdswap-enable-adl
@@ -26,15 +26,15 @@ protected:
 	size_type used_;
 	size_type capacity_;
 public:
-	Vector(const size_type& cap);
-	Vector();
+	explicit Vector(const size_type& cap);
+	Vector() noexcept;
 	~Vector();
 	Vector(const Vector<T>& other);
 	Vector(Vector<T>&& other) noexcept;
-	Vector<T>& operator=(Vector<T> that);
-	Vector<T>& operator=(Vector<T>&& that);
-	const int& capcity() const;
-	const int& used() const;
+	Vector<T>& operator=(Vector<T> that) noexcept;
+	Vector<T>& operator=(Vector<T>&& that) noexcept;
+	const int& capcity() const noexcept;
+	const int& used() const noexcept;
 	void push_back(const T& value);
 	void clear();
 	const T& operator[](const size_type& index) const;
@@ -43,12 +43,13 @@ public:
 };
 
 template <typename T>
-Vector<T>::Vector(const size_type& cap) : used_{0}, capacity_{cap}, array_{new T[cap]}
+Vector<T>::Vector(const size_type& cap) : array_{new T[cap]}, used_{0}, capacity_{cap}
 {
+	
 }
 
 template <typename T>
-Vector<T>::Vector() : Vector(0)
+Vector<T>::Vector() noexcept : Vector(0)
 {
 }
 
@@ -60,7 +61,7 @@ Vector<T>::~Vector()
 }
 
 template <typename T>
-Vector<T>::Vector(const Vector<T>& other) : used_{ other.used_ }, capacity_{ other.capacity_ }, array_{ new T[other.capacity_] }
+Vector<T>::Vector(const Vector<T>& other) : array_{ new T[other.capacity_] }, used_{ other.used_ }, capacity_{ other.capacity_ }
 {
 	// Copy data
 	// std::copy is marked as unsafe by vsc++
@@ -82,7 +83,7 @@ Vector<T>::Vector(Vector<T>&& other) noexcept : Vector()
 // Copy assignment
 // This is NOT const refence so we can make use of optimized Elide copy
 template <typename T>
-Vector<T>& Vector<T>::operator=(Vector<T> that)
+Vector<T>& Vector<T>::operator=(Vector<T> that) noexcept
 {
 	swap(*this, that);
 	return *this;
@@ -90,7 +91,7 @@ Vector<T>& Vector<T>::operator=(Vector<T> that)
 
 // Move assignment
 template <typename T>
-Vector<T>& Vector<T>::operator=(Vector<T>&& that)
+Vector<T>& Vector<T>::operator=(Vector<T>&& that) noexcept
 {
 	swap(*this, that);
 	return *this;
@@ -99,18 +100,17 @@ Vector<T>& Vector<T>::operator=(Vector<T>&& that)
 #pragma endregion Rule of five  
 
 template <typename T>
-const int& Vector<T>::capcity() const
+const int& Vector<T>::capcity() const noexcept
 {
 	return capacity_;
 }
 
 template <typename T>
-const int& Vector<T>::used() const
+const int& Vector<T>::used() const noexcept
 {
 	return used_;
 }
 
-// TODO Cannot make this value "const"
 template <typename T>
 void Vector<T>::push_back(const T& value)
 {

@@ -4,7 +4,7 @@
 class String : public Vector<char>
 {
 public:
-	String();
+	String() noexcept;
 	// Implicit
 	String(const char* input);
 
@@ -15,6 +15,7 @@ public:
 	bool operator!=(const String value) const;
 	const int& length() const;
 	String substr(int begin, int end) const;
+	void remove_spaces() const;
 	void erase(int begin, int end);
 	size_t find(char* s, size_t pos) const;
 	String& operator=(const String& move) = default;
@@ -36,9 +37,8 @@ inline std::ostream & operator<<(std::ostream & str, String const & v)
 	return str;
 }
 
-inline String::String()
+inline String::String() noexcept
 {
-	
 }
 
 inline String::String(const char* input)
@@ -71,7 +71,7 @@ inline bool String::operator==(const char* value) const
 inline bool String::operator==(const String value) const
 {
 	const auto* a = static_cast<char*>(value);
-	return *array_ == *a;
+	return strncmp(array_, a, used_) == 0;
 }
 
 inline bool String::operator!=(const char* value) const
@@ -108,6 +108,21 @@ inline String String::substr(int begin, int end) const
 	return n;
 }
 
+inline void String::remove_spaces() const
+{
+	// an alias to iterate through s without moving s
+	char* cpy = array_;
+	char* temp = array_;
+
+	while (*cpy)
+	{
+		if (*cpy != ' ')
+			*temp++ = *cpy;
+		cpy++;
+	}
+	*temp = 0;
+}
+
 inline void String::erase(int begin, int end)
 {
 	for (int i = 0; i < used_; i++)
@@ -133,7 +148,7 @@ inline size_t String::find(char* s, size_t pos = 0) const
 	return result;
 }
 
-inline int String::String::stoi(String value)
+inline int String::stoi(String value)
 {
 	int i;
 	sscanf_s(static_cast<char*>(value), "%d", &i);

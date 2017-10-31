@@ -53,8 +53,8 @@ Vector<String> CSVInterperter::process_line(String line)
 {
 	Vector<String> values;
 
-	// TODO Improve way of ignoring comments
-	if (line.substr(0, 1) == ignore)
+	const auto check = line.substr(0, 1);
+	if (check == ignore)
 	{
 		return values;
 	}

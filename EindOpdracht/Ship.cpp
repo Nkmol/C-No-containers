@@ -1,4 +1,5 @@
 #include "Ship.h"
+#include "Helper.h"
 
 const Ship Ship::empty_ship("empty", 0, 0, 0, "");
 
@@ -7,9 +8,18 @@ Ship::Ship(): Ship{ empty_ship }
 }
 
 Ship::Ship(const String& naam, int laadruimte, int kanonnen, int shadepunten, const String& bijzonderheden)
-	: shadepunten_{ shadepunten }, laadruimte_{ laadruimte }, kanonnen_{ kanonnen }, naam_{ naam },
-	bijzonderheden_{ bijzonderheden }, cur_laadruimte_ { 0 }
+	: shadepunten_{ shadepunten }, laadruimte_{ laadruimte }, kanonnen_{ kanonnen }, naam_{ naam }, cur_laadruimte_ { 0 }
 {
+	if(bijzonderheden != "")
+	{
+		Helper::search_for_delimeter(bijzonderheden, ",", bijzonderheden_);
+
+		// Remove whitespace
+		for(auto i = 0; i < bijzonderheden_.used(); i++)
+		{
+			bijzonderheden_[i].remove_spaces();
+		}
+	}
 }
 
 bool Ship::operator==(const Ship& b) const
@@ -45,7 +55,12 @@ const int& Ship::shadepunten() const
 	return shadepunten_;
 }
 
-const String& Ship::bijzonderheden() const
+void Ship::damage(const int& value)
+{
+	shadepunten_ -= value;
+}
+
+const Vector<String>& Ship::bijzonderheden() const
 {
 	return bijzonderheden_;
 }
@@ -53,4 +68,20 @@ const String& Ship::bijzonderheden() const
 const int& Ship::add_good(int value) const
 {
 	return cur_laadruimte_ += value;
+}
+
+bool Ship::has_speciality(const String& value) const
+{
+	auto result = false;
+	for(int i = 0; i < bijzonderheden_.used(); i++)
+	{
+		const auto check = bijzonderheden_[i];
+		if(check == value)
+		{
+			result = true;
+			break;
+		}
+	}
+
+	return result;
 }

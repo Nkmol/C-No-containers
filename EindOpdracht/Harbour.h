@@ -32,6 +32,7 @@ public:
 	Harbour();
 	~Harbour();
 	void enter_shop(Player* player);
+	const SailRoute& get_route(int index) const;
 	int open_shop() const;
 	int process_option(const int& option);
 	int open_harbour_list();

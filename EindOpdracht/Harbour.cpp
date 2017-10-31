@@ -36,6 +36,11 @@ void Harbour::enter_shop(Player* player)
 	calculate_cannon_prices();
 }
 
+const SailRoute& Harbour::get_route(int index) const
+{
+	return (*adapter_routes_)[index];
+}
+
 int Harbour::open_shop() const
 {
 	std::cout << "Welcome to Harbour " << name_ << ", how may I assist you?" << std::endl;
