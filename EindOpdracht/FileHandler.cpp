@@ -1,5 +1,6 @@
 #include "FileHandler.h"
 #include <fstream>
+#include "String.h"
 
 
 FileHandler::FileHandler()
@@ -29,11 +30,11 @@ void FileHandler::process(std::istream& str)
 	std::string line;
 	while (getline(str, line))
 	{
-		data_.push_back(line);
+		data_.push_back(line.c_str());
 	}
 }
 
-std::string const& FileHandler::operator[](size_t index) const
+String const& FileHandler::operator[](size_t index) const
 {
 	return data_[index];
 }

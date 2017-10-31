@@ -2,14 +2,14 @@
 #include "Helper.h"
 
 
-Cannon::Cannon(const std::string& type, const std::string& amount_span, const int& price) : buy_price_{price}, type_ {type}, acutal_amount_{0}
+Cannon::Cannon(const String& type, const String& amount_span, const int& price) : buy_price_{price}, type_ {type}, acutal_amount_{0}
 {
 	if (amount_span != "") {
-		Vector<std::string> r;
+		Vector<String> r;
 		Helper::search_for_delimeter(amount_span, "-", r);
 
-		min_ = std::stoi(r[0]);
-		max_ = std::stoi(r[1]);
+		min_ = String::stoi(r[0]);
+		max_ = String::stoi(r[1]);
 	}
 }
 
@@ -27,7 +27,7 @@ void Cannon::recalculate(std::mt19937 & mt) const
 	acutal_amount_ = std::uniform_int_distribution<int>(min_, max_)(mt);
 }
 
-const std::string& Cannon::get_type() const
+const String& Cannon::get_type() const
 {
 	return type_;
 }

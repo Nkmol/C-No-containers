@@ -1,17 +1,17 @@
 #pragma once
-#include <string>
+#include "String.h"
 
 class SailRoute
 {
-	std::string from_;
-	std::string to_;
+	String from_;
+	String to_;
 	int turns_;
 public:
-	SailRoute(const std::string from, const std::string to, const int& turns);
+	SailRoute(const String from, const String to, const int& turns);
 	SailRoute();
 	~SailRoute();
-	const std::string& from() const;
-	const std::string& to() const;
+	const String& from() const;
+	const String& to() const;
 	const int& turns() const;
 };
 

@@ -36,11 +36,11 @@ Vector<KeyValuePair<Ship, int>> create_ship_shop_adapter()
 	for (int i = 0; i < result.used(); i++)
 	{
 		const auto line = result[i];
-		const Ship ship{
-			line[0].value(), std::stoi(line[2].value()), std::stoi(line[3].value()), std::stoi(line[4].value()), line[5].value()
+		const Ship ship {
+			line[0].value(), String::stoi(static_cast<char*>(line[2].value())), String::stoi(static_cast<char*>(line[3].value())), String::stoi(static_cast<char*>(line[4].value())), line[5].value()
 		};
 
-		KeyValuePair<Ship, int> kv{ ship, std::stoi(line[1].value()) };
+		const KeyValuePair<Ship, int> kv{ ship, String::stoi(static_cast<char*>(line[1].value())) };
 
 		ship_shop_adapter.push_back(kv);
 	}
@@ -48,7 +48,7 @@ Vector<KeyValuePair<Ship, int>> create_ship_shop_adapter()
 	return ship_shop_adapter;
 }
 
-Vector<KeyValuePair<std::string, Vector<Product>>> create_goods_shop_adapter()
+Vector<KeyValuePair<String, Vector<Product>>> create_goods_shop_adapter()
 {
 	FileHandler file_handler;
 	file_handler.load_file("goederen prijzen.csv");
@@ -56,10 +56,10 @@ Vector<KeyValuePair<std::string, Vector<Product>>> create_goods_shop_adapter()
 	auto result = CSVInterperter::create_columns(file_handler);
 
 	// Create [City_name, [goods_name, span_amount]]
-	Vector<KeyValuePair<std::string, Vector<Product>>> goods_adapter;
+	Vector<KeyValuePair<String, Vector<Product>>> goods_adapter;
 	for (int i = 0; i < result.used(); i++)
 	{
-		std::string city;
+		String city;
 		Vector<Product> goods;
 		const auto line = result[i];
 		for (int j = 0; j < line.used(); j++)
@@ -75,7 +75,7 @@ Vector<KeyValuePair<std::string, Vector<Product>>> create_goods_shop_adapter()
 			goods.push_back(p);
 		}
 
-		KeyValuePair<std::string, Vector<Product>> kv{ city, goods };
+		KeyValuePair<String, Vector<Product>> kv{ city, goods };
 		goods_adapter.push_back(kv);
 	}
 
@@ -93,17 +93,17 @@ Vector<Cannon> create_cannons_adapter()
 	return result;
 }
 
-Vector<KeyValuePair<std::string, Vector<SailRoute>>> create_routes_adapter()
+Vector<KeyValuePair<String, Vector<SailRoute>>> create_routes_adapter()
 {
 	FileHandler file_handler;
 	file_handler.load_file("afstanden tussen steden.csv");
 
 	auto result = CSVInterperter::create_columns(file_handler);
-	Vector<KeyValuePair<std::string, Vector<SailRoute>>> adapter;
+	Vector<KeyValuePair<String, Vector<SailRoute>>> adapter;
 
 	for (int i = 0; i < result.used(); i++)
 	{
-		std::string from;
+		String from;
 		Vector<SailRoute> routes;
 		const auto line = result[i];
 		for (int j = 0; j < line.used(); j++)
@@ -111,15 +111,15 @@ Vector<KeyValuePair<std::string, Vector<SailRoute>>> create_routes_adapter()
 			const auto& value = line[j];
 			if (value.key() == "")
 			{
-				from = value.value();
+				from = std::move(value.value());
 				continue;
 			}
 
-			SailRoute r{ from, value.key(), std::stoi(value.value()) };
+			SailRoute r{ from, value.key(), String::String::stoi(static_cast<char*>(value.value())) };
 			routes.push_back(r);
 		}
 
-		KeyValuePair<std::string, Vector<SailRoute>> kv { from, routes };
+		KeyValuePair<String, Vector<SailRoute>> kv { from, routes };
 		adapter.push_back(kv);
 	}
 
@@ -128,19 +128,6 @@ Vector<KeyValuePair<std::string, Vector<SailRoute>>> create_routes_adapter()
 
 int main(int argc, char* argv[])
 {
-	/*String t;
-	t.push_back('t');
-	t.push_back('e');
-	t.push_back('s');
-	t.push_back('t');
-
-	std::cout << t << std::endl;*/
-
-	String t = "test";
-	std::cout << t << std::endl;
-	std::cin.get();
-
-
 	// init randomizer by seed (seed is hardware coupled)
 	std::random_device rd;
 	std::mt19937 mt(rd());

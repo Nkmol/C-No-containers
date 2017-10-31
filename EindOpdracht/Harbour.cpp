@@ -5,7 +5,7 @@
 Harbour::Harbour(const ships_shop_datatype* ships, const goods_shop_datatype* goods,
                  const cannons_shop_datatype* cannons, const routes_datatype* routes,
                  std::mt19937* random,
-                 Player* player, const std::string& name)
+                 Player* player, const String& name)
 	: adapter_goods_{goods}, adapter_ships_{ships}, adapter_cannons_{cannons}, adapter_routes_{routes}, player_ {
 		player
 	}, random_{random}, name_{name}
@@ -14,7 +14,7 @@ Harbour::Harbour(const ships_shop_datatype* ships, const goods_shop_datatype* go
 
 Harbour::Harbour(const ships_shop_datatype* ships, const goods_shop_datatype* goods,
                  const cannons_shop_datatype* cannons, const routes_datatype* routes, std::mt19937* random,
-                 const std::string& name) : Harbour(
+                 const String& name) : Harbour(
 	ships, goods, cannons, routes, random, nullptr, name)
 {
 }
@@ -263,12 +263,12 @@ void Harbour::buy_ship(int ship_index) const
 	player_->set_ship(ship_to_buy.key());
 }
 
-const std::string& Harbour::get_name() const
+const String& Harbour::get_name() const
 {
 	return name_;
 }
 
-void Harbour::set_name(const std::string& name)
+void Harbour::set_name(const String& name)
 {
 	name_ = name;
 }

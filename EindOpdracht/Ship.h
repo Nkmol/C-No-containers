@@ -1,6 +1,5 @@
 #pragma once
-#include <string>
-#include "KeyValuePair.h"
+#include "String.h"
 #include "Vector.h"
 
 class Ship
@@ -8,20 +7,20 @@ class Ship
 	int shadepunten_;
 	int laadruimte_;
 	int kanonnen_;
-	std::string naam_;
-	std::string bijzonderheden_;
+	String naam_;
+	String bijzonderheden_;
 	mutable int cur_laadruimte_;
 public:
 	static const Ship empty_ship;
 	Ship();
-	Ship(const std::string& naam, int laadruimte, int kanonnen, int shadepunten, const std::string& bijzonderheden);
+	Ship(const String& naam, int laadruimte, int kanonnen, int shadepunten, const String& bijzonderheden);
 	bool operator==(const Ship& b) const;
-	const std::string& name() const;
+	const String& name() const;
 	const int& laadruimte() const;
 	const int& cur_laadruimte() const;
 	const int& kanonnen() const;
 	const int& shadepunten() const;
-	const std::string& bijzonderheden() const;
+	const String& bijzonderheden() const;
 	const int& add_good(int value) const;
 };
 

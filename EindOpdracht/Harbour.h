@@ -1,11 +1,12 @@
 #pragma once
-#include <string>
 #include "Ship.h"
 #include "Player.h"
 #include <random>
 #include "Product.h"
 #include "Cannon.h"
 #include "SailRoute.h"
+#include "KeyValuePair.h"
+#include "String.h"
 
 class Harbour
 {
@@ -22,12 +23,12 @@ class Harbour
 	Player* player_;
 	std::mt19937* random_;
 
-	std::string name_;
+	String name_;
 public:
 	Harbour(const ships_shop_datatype* ships, const goods_shop_datatype* goods, const cannons_shop_datatype* cannons, const routes_datatype* routes,
-		std::mt19937* random, Player* player, const std::string& name);
+		std::mt19937* random, Player* player, const String& name);
 	Harbour(const ships_shop_datatype* ships, const goods_shop_datatype* goods, const cannons_shop_datatype* cannons, const routes_datatype* routes,
-		std::mt19937* random, const std::string& name);
+		std::mt19937* random, const String& name);
 	Harbour();
 	~Harbour();
 	void enter_shop(Player* player);
@@ -43,6 +44,6 @@ public:
 	void open_ship_shop() const;
 	const int& get_ship_price(const Ship& ship) const;
 	void buy_ship(int ship_index) const;
-	const std::string& get_name() const;
-	void set_name(const std::string& name);
+	const String& get_name() const;
+	void set_name(const String& name);
 };

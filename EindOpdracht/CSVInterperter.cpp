@@ -1,18 +1,19 @@
 #include "CSVInterperter.h"
 #include "KeyValuePair.h"
 #include "Helper.h"
+#include "String.h"
 
-const std::string CSVInterperter::delimiter_ = ";";
-const std::string CSVInterperter::ignore = "#";
+const String CSVInterperter::delimiter_ = ";";
+const String CSVInterperter::ignore = "#";
 
 CSV_data_type CSVInterperter::create_columns(const FileHandler& handler)
 {
 	CSV_data_type data;
-	Vector<std::string> headers;
+	Vector<String> headers;
 	for (size_t i = 0; i < handler.size(); i++)
 	{
 		const auto& line = handler[i];
-		Vector<std::string> values = process_line(line);
+		Vector<String> values = process_line(line);
 
 		if (values.used() > 0)
 		{
@@ -35,22 +36,22 @@ CSVInterperter::CSVInterperter()
 {
 }
 
-Vector<KeyValuePair<std::string, std::string>> CSVInterperter::create_line(
-	const Vector<std::string>& values, const Vector<std::string>& headers)
+Vector<KeyValuePair<String, String>> CSVInterperter::create_line(
+	const Vector<String>& values, const Vector<String>& headers)
 {
-	Vector<KeyValuePair<std::string, std::string>> properties;
+	Vector<KeyValuePair<String, String>> properties;
 	for (int i = 0; i < values.used(); i++)
 	{
-		KeyValuePair<std::string, std::string> kv{headers[i], values[i]};
+		KeyValuePair<String, String> kv{headers[i], values[i]};
 		properties.push_back(kv);
 	}
 
 	return properties;
 }
 
-Vector<std::string> CSVInterperter::process_line(std::string line)
+Vector<String> CSVInterperter::process_line(String line)
 {
-	Vector<std::string> values;
+	Vector<String> values;
 
 	// TODO Improve way of ignoring comments
 	if (line.substr(0, 1) == ignore)

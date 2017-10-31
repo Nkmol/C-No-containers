@@ -7,9 +7,6 @@ using size_type = size_t;
 template <typename T>
 class Vector
 {
-	size_type used_;
-	size_type capacity_;
-
 	/// https://stackoverflow.com/questions/3279543/what-is-the-copy-and-swap-idiom
 	/// https://stackoverflow.com/questions/5695548/public-friend-swap-member-function
 	friend void swap(Vector<T>& first, Vector<T>& second) noexcept //nothrow
@@ -26,6 +23,8 @@ class Vector
 	}
 protected:
 	T* array_;
+	size_type used_;
+	size_type capacity_;
 public:
 	Vector(const size_type& cap);
 	Vector();

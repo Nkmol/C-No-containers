@@ -1,21 +1,24 @@
 #include "Helper.h"
-#include <string>
-#include "Vector.h"
 
 
 Helper::Helper()
 {
 }
 
-void Helper::search_for_delimeter(std::string to_serach, std::string delimeter, Vector<std::string>& result)
+void Helper::search_for_delimeter(String to_serach, String delimeter, Vector<String>& result)
 {
 	size_t pos = 0;
-	while ((pos = to_serach.find(delimeter)) != std::string::npos)
+	pos = to_serach.find(static_cast<char*>(delimeter));
+
+	// while((post = s.find()) != npos) does not work?
+	while (pos != String::npos)
 	{
-		auto properties = to_serach.substr(0, pos);
+		const auto properties = to_serach.substr(0, pos);
 		result.push_back(properties);
 
 		to_serach.erase(0, pos + delimeter.length());
+
+		pos = to_serach.find(static_cast<char*>(delimeter));
 	}
 
 	// Push last value

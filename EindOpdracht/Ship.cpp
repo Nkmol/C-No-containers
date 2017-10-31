@@ -6,7 +6,7 @@ Ship::Ship(): Ship{ empty_ship }
 {
 }
 
-Ship::Ship(const std::string& naam, int laadruimte, int kanonnen, int shadepunten, const std::string& bijzonderheden)
+Ship::Ship(const String& naam, int laadruimte, int kanonnen, int shadepunten, const String& bijzonderheden)
 	: shadepunten_{ shadepunten }, laadruimte_{ laadruimte }, kanonnen_{ kanonnen }, naam_{ naam },
 	bijzonderheden_{ bijzonderheden }, cur_laadruimte_ { 0 }
 {
@@ -20,7 +20,7 @@ bool Ship::operator==(const Ship& b) const
 	return pntr_a == pntr_b;
 }
 
-const std::string& Ship::name() const
+const String& Ship::name() const
 {
 	return naam_;
 }
@@ -45,7 +45,7 @@ const int& Ship::shadepunten() const
 	return shadepunten_;
 }
 
-const std::string& Ship::bijzonderheden() const
+const String& Ship::bijzonderheden() const
 {
 	return bijzonderheden_;
 }
