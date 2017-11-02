@@ -41,6 +41,7 @@ public:
 	const T& operator[](const size_type& index) const;
 	T& operator[](const size_type& index);
 	void resize(const size_type& cap);
+	void remove(const size_type& index);
 };
 
 template <typename T>
@@ -174,4 +175,16 @@ void Vector<T>::resize(const size_type& cap)
 	delete[] array_;
 
 	array_ = temp;
+}
+
+template <typename T>
+void Vector<T>::remove(const size_type& index)
+{
+	/*for (int i = 0; i < used_; i++)
+	{
+		if (i == index)
+		{
+			*array_[i] = *array_[i + i];
+		}
+	}*/
 }

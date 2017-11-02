@@ -140,13 +140,12 @@ void Harbour::open_cannons_shop()
 void Harbour::buy_cannon(int number) const
 {
 	auto& player_ship = player_->get_ship();
-	if (player_ship.cur_laadruimte() + 1 > player_ship.laadruimte())
+	if (player_ship.cur_cannons() + 1 > player_ship.max_cannons())
 	{
-		std::cout << "It seems that your ship cannot carry any more goods. " << std::endl;
+		std::cout << "It seems that your ship cannot carry any more cannons. " << std::endl;
 		Helper::enter_continue();
 		return;
 	}
-
 
 	auto& adapter = *adapter_cannons_;
 	if (adapter[number].get_actual_amount() <= 0)
@@ -164,8 +163,15 @@ void Harbour::buy_cannon(int number) const
 		return;
 	}
 
+	if(player_ship.has_speciality("licht") && adapter[number].get_type() == "heavy")
+	{
+		std::cout << "This cannon would be too heavy for your ship. A light ship can only carry Medium or Light cannons. " << std::endl;
+		Helper::enter_continue();
+		return;
+	}
+
 	player_->decrease_gold(adapter[number].get_price());
-	player_ship.add_good(1);
+	player_ship.add_cannon(adapter[number]);
 	adapter[number].reduce_actual_amount(1);
 }
 

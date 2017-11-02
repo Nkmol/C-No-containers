@@ -6,7 +6,7 @@ Ship::Ship(): Ship("", 0, 0, 0, "")
 }
 
 Ship::Ship(const String& naam, int laadruimte, int kanonnen, int shadepunten, const String& bijzonderheden)
-	: max_shadepunten_{shadepunten}, cur_shadepunten_{0}, laadruimte_{laadruimte}, kanonnen_{kanonnen}, naam_{naam},
+	: max_shadepunten_{shadepunten}, cur_shadepunten_{0}, laadruimte_{laadruimte}, max_cannons_{kanonnen}, naam_{naam},
 	  cur_laadruimte_ {0}
 {
 	if (bijzonderheden != "")
@@ -48,9 +48,24 @@ const int& Ship::cur_laadruimte() const
 	return cur_laadruimte_;
 }
 
-const int& Ship::kanonnen() const
+const int& Ship::max_cannons() const
 {
-	return kanonnen_;
+	return max_cannons_;
+}
+
+const int& Ship::cur_cannons() const
+{
+	return cannons_.used();
+}
+
+void Ship::add_cannon(const Cannon& value)
+{
+	cannons_.push_back(value);
+}
+
+void Ship::remove_cannon(const int& index)
+{
+	cannons_.remove(index);
 }
 
 const int& Ship::max_shadepunten() const
@@ -90,6 +105,7 @@ bool Ship::sank() const
 	return cur_shadepunten_ >= max_shadepunten_;
 }
 
+// klein, licht, log
 bool Ship::has_speciality(const String& value) const
 {
 	auto result = false;
