@@ -223,23 +223,32 @@ void Harbour::sell_cannon(int index) const
 
 void Harbour::open_goods_shop() const
 {
+	std::cout << "[0]. Sell goods" << std::endl
+		<< std::endl;
+
 	std::cout << "Our goods: " << std::endl;
 
 	auto& adapter = *adapter_goods_;
 	for (int i = 0; i < adapter.used(); i++)
 	{
-		std::cout << "[" << i << "]. " << adapter[i].get_name() << " = " << adapter[i].get_actual_cost() << std::endl;
+		std::cout << "[" << i+1 << "]. " << adapter[i].get_name() << " = " << adapter[i].get_actual_cost() << std::endl;
 	}
 
-	const auto number = Helper::request_int(0, adapter.used() - 1);
+	const auto number = Helper::request_int(0, adapter.used());
 
-	buy_good(number);
+	if (number == 0)
+	{
+		open_goods_sell();
+	}
+	else {
+		buy_good(number - 1); // to index based
+	}
 }
 
 void Harbour::buy_good(int number) const
 {
 	auto& player_ship = player_->get_ship();
-	if (player_ship.cur_laadruimte() + 1 > player_ship.laadruimte())
+	if (player_ship.cur_cargo() + 1 > player_ship.max_cargo())
 	{
 		std::cout << "It seems that your ship cannot carry any more goods. " << std::endl;
 		Helper::enter_continue();
@@ -257,7 +266,44 @@ void Harbour::buy_good(int number) const
 	}
 
 	player_->decrease_gold(adapter[number].get_actual_cost());
-	player_ship.add_good(1);
+	player_ship.add_good(adapter[number]);
+}
+
+void Harbour::open_goods_sell() const
+{
+	std::cout << std::endl;
+	std::cout << "List of goods your ship is currently carrying." << std::endl;
+	std::cout << "A product is sold at 50% of the official bought price." << std::endl;
+
+	auto& player_ship = player_->get_ship();
+	auto& player_goods = player_ship.cargo();
+
+	if(player_goods.used() == 0)
+	{
+		std::cout << "You seem to not own any product." << std::endl;
+		Helper::enter_continue();
+		return;
+	}
+
+	for(int i = 0; i < player_goods.used(); i++)
+	{
+		auto& product = player_goods[i];
+		std::cout << "[" << i << "]. a " << product.get_name() << " will sell for " << product.get_actual_cost() * 0.5 << std::endl;
+	}
+
+	const auto number = Helper::request_int(0, player_goods.used() - 1);
+
+	sell_product(number);
+}
+
+void Harbour::sell_product(int index) const
+{
+	auto& player_ship = player_->get_ship();
+	auto& player_goods = player_ship.cargo();
+
+	const int sell_price = player_goods[index].get_actual_cost() * 0.5;
+	player_->increase_gold(sell_price);
+	player_->get_ship().remove_good(index);
 }
 
 void Harbour::calculate_cannon_prices() const

@@ -6,8 +6,8 @@ Ship::Ship(): Ship("", 0, 0, 0, "")
 }
 
 Ship::Ship(const String& naam, int laadruimte, int kanonnen, int shadepunten, const String& bijzonderheden)
-	: max_shadepunten_{shadepunten}, cur_shadepunten_{0}, laadruimte_{laadruimte}, max_cannons_{kanonnen}, naam_{naam},
-	  cur_laadruimte_ {0}
+	: max_shadepunten_{shadepunten}, cur_shadepunten_{0}, max_cargo_{laadruimte}, max_cannons_{kanonnen}, naam_{naam},
+	  cargo_ {0}
 {
 	if (bijzonderheden != "")
 	{
@@ -38,14 +38,19 @@ const String& Ship::name() const
 	return naam_;
 }
 
-const int& Ship::laadruimte() const
+const int& Ship::max_cargo() const
 {
-	return laadruimte_;
+	return max_cargo_;
 }
 
-const int& Ship::cur_laadruimte() const
+const int& Ship::cur_cargo() const
 {
-	return cur_laadruimte_;
+	return cargo_.used();
+}
+
+const Vector<Product>& Ship::cargo() const
+{
+	return cargo_;
 }
 
 const Vector<Cannon>& Ship::cannons() const
@@ -101,9 +106,15 @@ const Vector<String>& Ship::bijzonderheden() const
 	return bijzonderheden_;
 }
 
-const int& Ship::add_good(int value) const
+// Add copy
+void Ship::add_good(const Product value)
 {
-	return cur_laadruimte_ += value;
+	cargo_.push_back(value);
+}
+
+void Ship::remove_good(int index)
+{
+	cargo_.remove(index);
 }
 
 bool Ship::sank() const
