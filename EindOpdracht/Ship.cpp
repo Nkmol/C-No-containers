@@ -48,6 +48,11 @@ const int& Ship::cur_laadruimte() const
 	return cur_laadruimte_;
 }
 
+const Vector<Cannon>& Ship::cannons() const
+{
+	return cannons_;
+}
+
 const int& Ship::max_cannons() const
 {
 	return max_cannons_;
@@ -58,7 +63,8 @@ const int& Ship::cur_cannons() const
 	return cannons_.used();
 }
 
-void Ship::add_cannon(const Cannon& value)
+// Add copy
+void Ship::add_cannon(const Cannon value)
 {
 	cannons_.push_back(value);
 }

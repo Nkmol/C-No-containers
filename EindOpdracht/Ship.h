@@ -22,9 +22,10 @@ public:
 	const String& name() const;
 	const int& laadruimte() const;
 	const int& cur_laadruimte() const;
+	const Vector<Cannon>& cannons() const;
 	const int& max_cannons() const;
 	const int& cur_cannons() const;
-	void add_cannon(const Cannon& value);
+	void add_cannon(const Cannon value);
 	void remove_cannon(const int& index);
 	const int& max_shadepunten() const;
 	const int& cur_shadepunten() const;

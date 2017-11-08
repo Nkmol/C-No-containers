@@ -41,6 +41,8 @@ public:
 	int open_harbour_list() const;
 	void open_cannons_shop();
 	void buy_cannon(int number) const;
+	void open_cannon_sell() const;
+	void sell_cannon(int index) const;
 	void open_goods_shop() const;
 	void buy_good(int number) const;
 	void calculate_cannon_prices() const;

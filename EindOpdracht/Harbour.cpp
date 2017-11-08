@@ -123,18 +123,27 @@ int Harbour::open_harbour_list() const
 
 void Harbour::open_cannons_shop()
 {
+	std::cout << "[0]. Sell cannons" << std::endl 
+	<< std::endl;
+
 	std::cout << "Our cannons: " << std::endl;
 	auto& adapter = *adapter_cannons_;
 	for (int i = 0; i < adapter.used(); i++)
 	{
 		auto& cannon = adapter[i];
-		std::cout << "[" << i << "]. " << cannon.get_type() << " [" << cannon.get_actual_amount() << "] = " << cannon.
+		std::cout << "[" << i+1 << "]. " << cannon.get_type() << " [" << cannon.get_actual_amount() << "] = " << cannon.
 			get_price() << std::endl;
 	}
 
-	const auto number = Helper::request_int(0, adapter.used() - 1);
+	const auto number = Helper::request_int(0, adapter.used());
 
-	buy_cannon(number);
+	if(number == 0)
+	{
+		open_cannon_sell();
+	}
+	else {
+		buy_cannon(number - 1); // to index based
+	}
 }
 
 void Harbour::buy_cannon(int number) const
@@ -173,6 +182,43 @@ void Harbour::buy_cannon(int number) const
 	player_->decrease_gold(adapter[number].get_price());
 	player_ship.add_cannon(adapter[number]);
 	adapter[number].reduce_actual_amount(1);
+}
+
+void Harbour::open_cannon_sell() const
+{
+	std::cout << std::endl;
+	std::cout << "List of cannons your ship currently has. Choose a cannon to sell" << std::endl;
+	std::cout << "A cannon is sold at 50% of the official bought price." << std::endl;
+	
+	auto& player_ship = player_->get_ship();
+	auto& cannons = player_ship.cannons();
+
+	if(cannons.used() == 0)
+	{
+		std::cout << "Your ship seems to not have any cannons." << std::endl;
+		Helper::enter_continue();
+		return;
+	}
+
+	for(int i = 0; i < cannons.used(); i++)
+	{
+		auto& cannon = cannons[i];
+		std::cout << "[" << i << "]. a " << cannon.get_type() << " cannon will sell for " << cannon.get_price() * 0.5 << std::endl;
+	}
+
+	const auto number = Helper::request_int(0, cannons.used() - 1);
+
+	sell_cannon(number);
+}
+
+void Harbour::sell_cannon(int index) const
+{
+	auto& player_ship = player_->get_ship();
+	auto& cannons = player_ship.cannons();
+
+	const int sell_price = cannons[index].get_price() * 0.5;
+	player_->increase_gold(sell_price);
+	player_->get_ship().remove_cannon(index);
 }
 
 void Harbour::open_goods_shop() const
