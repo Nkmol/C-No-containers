@@ -180,7 +180,6 @@ void Vector<T>::resize(const size_type& cap)
 template <typename T>
 void Vector<T>::remove(const size_type& index)
 {
-
 	for (int i = index; i < used_ - 1; i++)
 	{
 		array_[i] = array_[i + 1];

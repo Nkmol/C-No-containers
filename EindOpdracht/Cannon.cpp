@@ -2,8 +2,9 @@
 #include "Helper.h"
 
 
-Cannon::Cannon(const String& type, const String& amount_span, const int& price, const String& damage_span) : buy_price_{price}, type_ {type},
-                                                                                  acutal_amount_{0}
+Cannon::Cannon(const String& type, const String& amount_span, const int& price, const String& damage_span) :
+	buy_price_{price}, type_ {type},
+	acutal_amount_{0}
 {
 	if (amount_span != "")
 	{

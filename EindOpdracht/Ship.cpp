@@ -148,7 +148,7 @@ bool Ship::has_speciality(const String& value) const
 int Ship::shoot(std::mt19937& random) const
 {
 	int total_damage = 0;
-	for(int i = 0; i < cannons_.used(); i++)
+	for (int i = 0; i < cannons_.used(); i++)
 	{
 		const auto& cannon = cannons_[i];
 		const std::uniform_int_distribution<int> dist_damage(cannon.min_damage(), cannon.max_damage());

@@ -123,25 +123,26 @@ int Harbour::open_harbour_list() const
 
 void Harbour::open_cannons_shop()
 {
-	std::cout << "[0]. Sell cannons" << std::endl 
-	<< std::endl;
+	std::cout << "[0]. Sell cannons" << std::endl
+		<< std::endl;
 
 	std::cout << "Our cannons: " << std::endl;
 	auto& adapter = *adapter_cannons_;
 	for (int i = 0; i < adapter.used(); i++)
 	{
 		auto& cannon = adapter[i];
-		std::cout << "[" << i+1 << "]. " << cannon.get_type() << " [" << cannon.get_actual_amount() << "] = " << cannon.
+		std::cout << "[" << i + 1 << "]. " << cannon.get_type() << " [" << cannon.get_actual_amount() << "] = " << cannon.
 			get_price() << std::endl;
 	}
 
 	const auto number = Helper::request_int(0, adapter.used());
 
-	if(number == 0)
+	if (number == 0)
 	{
 		open_cannon_sell();
 	}
-	else {
+	else
+	{
 		buy_cannon(number - 1); // to index based
 	}
 }
@@ -172,9 +173,10 @@ void Harbour::buy_cannon(int number) const
 		return;
 	}
 
-	if(player_ship.has_speciality("licht") && adapter[number].get_type() == "heavy")
+	if (player_ship.has_speciality("licht") && adapter[number].get_type() == "heavy")
 	{
-		std::cout << "This cannon would be too heavy for your ship. A light ship can only carry Medium or Light cannons. " << std::endl;
+		std::cout << "This cannon would be too heavy for your ship. A light ship can only carry Medium or Light cannons. " <<
+			std::endl;
 		Helper::enter_continue();
 		return;
 	}
@@ -189,21 +191,22 @@ void Harbour::open_cannon_sell() const
 	std::cout << std::endl;
 	std::cout << "List of cannons your ship currently has. Choose a cannon to sell" << std::endl;
 	std::cout << "A cannon is sold at 50% of the official bought price." << std::endl;
-	
+
 	auto& player_ship = player_->get_ship();
 	auto& cannons = player_ship.cannons();
 
-	if(cannons.used() == 0)
+	if (cannons.used() == 0)
 	{
 		std::cout << "Your ship seems to not have any cannons." << std::endl;
 		Helper::enter_continue();
 		return;
 	}
 
-	for(int i = 0; i < cannons.used(); i++)
+	for (int i = 0; i < cannons.used(); i++)
 	{
 		auto& cannon = cannons[i];
-		std::cout << "[" << i << "]. a " << cannon.get_type() << " cannon will sell for " << cannon.get_price() * 0.5 << std::endl;
+		std::cout << "[" << i << "]. a " << cannon.get_type() << " cannon will sell for " << cannon.get_price() * 0.5 << std::
+			endl;
 	}
 
 	const auto number = Helper::request_int(0, cannons.used() - 1);
@@ -231,7 +234,7 @@ void Harbour::open_goods_shop() const
 	auto& adapter = *adapter_goods_;
 	for (int i = 0; i < adapter.used(); i++)
 	{
-		std::cout << "[" << i+1 << "]. " << adapter[i].get_name() << " = " << adapter[i].get_actual_cost() << std::endl;
+		std::cout << "[" << i + 1 << "]. " << adapter[i].get_name() << " = " << adapter[i].get_actual_cost() << std::endl;
 	}
 
 	const auto number = Helper::request_int(0, adapter.used());
@@ -240,7 +243,8 @@ void Harbour::open_goods_shop() const
 	{
 		open_goods_sell();
 	}
-	else {
+	else
+	{
 		buy_good(number - 1); // to index based
 	}
 }
@@ -278,17 +282,18 @@ void Harbour::open_goods_sell() const
 	auto& player_ship = player_->get_ship();
 	auto& player_goods = player_ship.cargo();
 
-	if(player_goods.used() == 0)
+	if (player_goods.used() == 0)
 	{
 		std::cout << "You seem to not own any product." << std::endl;
 		Helper::enter_continue();
 		return;
 	}
 
-	for(int i = 0; i < player_goods.used(); i++)
+	for (int i = 0; i < player_goods.used(); i++)
 	{
 		auto& product = player_goods[i];
-		std::cout << "[" << i << "]. a " << product.get_name() << " will sell for " << product.get_actual_cost() * 0.5 << std::endl;
+		std::cout << "[" << i << "]. a " << product.get_name() << " will sell for " << product.get_actual_cost() * 0.5 << std
+			::endl;
 	}
 
 	const auto number = Helper::request_int(0, player_goods.used() - 1);

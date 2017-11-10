@@ -19,11 +19,13 @@ public:
 	const String& from() const;
 	const String& to() const;
 	const int& turns() const;
-	void sail(const ::Player& player, std::mt19937& random, const Vector<KeyValuePair<Ship, int>>& ship_adapter, const Vector<Cannon>
+	void sail(const Player& player, std::mt19937& random, const Vector<KeyValuePair<Ship, int>>& ship_adapter,
+	          const Vector<Cannon>
 	          cannon_adapter);
 	void not_moved() const;
 	void normal_wind();
-	void pirate_event(const ::Player& player, std::mt19937& random, const Vector<KeyValuePair<Ship, int>>& ship_adapter, const Vector<Cannon>
+	void pirate_event(const Player& player, std::mt19937& random, const Vector<KeyValuePair<Ship, int>>& ship_adapter,
+	                  const Vector<Cannon>
 	                  cannon_adapter) const;
 	void pirate_event_surrender(Ship& player_ship) const;
 	bool pirate_event_flee(Ship& player_ship, Ship& pirate_ship) const;

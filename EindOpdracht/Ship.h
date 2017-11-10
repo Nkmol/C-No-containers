@@ -45,7 +45,8 @@ public:
 // https://stackoverflow.com/questions/5171739/tostring-override-in-c
 inline std::ostream& operator<<(std::ostream& Str, Ship const& v)
 {
-	Str << v.name() << "   Cargo: " << v.cur_cargo() << "/" << v.max_cargo() << "   Cannons: " << v.cur_cannons() << "/" << v.max_cannons() <<
+	Str << v.name() << "   Cargo: " << v.cur_cargo() << "/" << v.max_cargo() << "   Cannons: " << v.cur_cannons() << "/" <<
+		v.max_cannons() <<
 		"   Damaged: " << v.cur_shadepunten() << "/" << v.max_shadepunten() << "   ";
 
 	// TODO can be replaced by "<<" operator of Vector<T>

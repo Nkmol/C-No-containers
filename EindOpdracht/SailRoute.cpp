@@ -5,7 +5,8 @@ SailRoute::SailRoute() : SailRoute("", "", 0)
 {
 }
 
-SailRoute::SailRoute(const String from, const String to, const int& turns) : from_{from}, to_{to}, turns_{turns}
+SailRoute::SailRoute(const String from, const String to, const int& turns) : from_{from}, to_{to}, turns_{turns},
+                                                                             random_(nullptr)
 {
 }
 
@@ -28,13 +29,14 @@ const int& SailRoute::turns() const
 	return turns_;
 }
 
-void SailRoute::sail(const Player& player, std::mt19937& random, const Vector<KeyValuePair<Ship, int>>& ship_adapter, const Vector<Cannon> cannon_adapter)
+void SailRoute::sail(const Player& player, std::mt19937& random, const Vector<KeyValuePair<Ship, int>>& ship_adapter,
+                     const Vector<Cannon> cannon_adapter)
 {
 	random_ = &random;
 	// Pirate ship chance
 	const std::uniform_int_distribution<int> dist_pirate_event(1, 100);
 	const int pirate_event_chance = dist_pirate_event(random);
-	if(pirate_event_chance <= 20)
+	if (pirate_event_chance <= 20)
 	{
 		pirate_event(player, random, ship_adapter, cannon_adapter);
 		system("cls");
@@ -127,7 +129,9 @@ void SailRoute::normal_wind()
 	turns_--;
 }
 
-void SailRoute::pirate_event(const Player& player, std::mt19937& random, const Vector<KeyValuePair<Ship, int>>& ship_adapter, const Vector<Cannon> cannon_adapter) const
+void SailRoute::pirate_event(const Player& player, std::mt19937& random,
+                             const Vector<KeyValuePair<Ship, int>>& ship_adapter,
+                             const Vector<Cannon> cannon_adapter) const
 {
 	std::cout << std::endl;
 	std::cout << "A ship approaches you... It is a pirate ship!" << std::endl;
@@ -141,10 +145,10 @@ void SailRoute::pirate_event(const Player& player, std::mt19937& random, const V
 	const std::uniform_int_distribution<int> dist_amount_cannonns(0, r_ship.max_cannons());
 	const int amount_cannons = dist_amount_cannonns(random);
 
-	for(int i = 0; i < amount_cannons; i++)
+	for (int i = 0; i < amount_cannons; i++)
 	{
 		auto cannon_index = 0;
-		if(r_ship.has_speciality("licht"))
+		if (r_ship.has_speciality("licht"))
 		{
 			const std::uniform_int_distribution<int> dist_random_cannon(0, cannon_adapter.used() - 2);
 			cannon_index = dist_random_cannon(random);
@@ -160,7 +164,7 @@ void SailRoute::pirate_event(const Player& player, std::mt19937& random, const V
 
 	auto& player_ship = player.get_ship();
 
-	while(!r_ship.sank() && !player_ship.sank())
+	while (!r_ship.sank() && !player_ship.sank())
 	{
 		system("cls");
 		std::cout << "Pirate ship: " << r_ship << std::endl;
@@ -174,15 +178,16 @@ void SailRoute::pirate_event(const Player& player, std::mt19937& random, const V
 
 		const auto number = Helper::request_int(0, 2);
 
-		switch(number)
+		switch (number)
 		{
-			case 0:
-				pirate_event_shoot(player_ship, r_ship);
-				break;
-			case 1: 
+		case 0:
+			pirate_event_shoot(player_ship, r_ship);
+			break;
+		case 1:
 			{
 				const auto result = pirate_event_flee(player_ship, r_ship);
-				if (result) {
+				if (result)
+				{
 					std::cout << "Succesfully fled the pirate ship!" << std::endl;
 					Helper::enter_continue();
 					return;
@@ -192,12 +197,12 @@ void SailRoute::pirate_event(const Player& player, std::mt19937& random, const V
 				pirate_shoot(player_ship, r_ship);
 				break;
 			}
-			case 2:
-				pirate_event_surrender(player_ship);
-				Helper::enter_continue();
-				return;
-			default: 
-				break;
+		case 2:
+			pirate_event_surrender(player_ship);
+			Helper::enter_continue();
+			return;
+		default:
+			break;
 		}
 
 		Helper::enter_continue();
@@ -206,7 +211,8 @@ void SailRoute::pirate_event(const Player& player, std::mt19937& random, const V
 
 void SailRoute::pirate_event_surrender(Ship& player_ship) const
 {
-	std::cout << "The pirates spare your lives, but take away all your cargo and throw away what they cannot carry." << std::endl;
+	std::cout << "The pirates spare your lives, but take away all your cargo and throw away what they cannot carry." << std
+		::endl;
 	std::cout << "You lost " << player_ship.cur_cargo() << " different goods." << std::endl;
 
 	player_ship.cargo_clear();
@@ -218,7 +224,7 @@ bool SailRoute::pirate_event_flee(Ship& player_ship, Ship& pirate_ship) const
 	const auto flee_chance = dist_flee_chance(*random_);
 
 	auto chance_to_flee = 0;
-	if(player_ship.has_speciality("licht"))
+	if (player_ship.has_speciality("licht"))
 	{
 		if (pirate_ship.has_speciality("licht"))
 			chance_to_flee = 50;
@@ -253,7 +259,7 @@ void SailRoute::pirate_event_shoot(Ship& player_ship, Ship& pirate_ship) const
 {
 	player_shoot(player_ship, pirate_ship);
 
-	if(player_ship.sank())
+	if (player_ship.sank())
 	{
 		std::cout << "You have destroyed the pirate ship!" << std::endl;
 		Helper::enter_continue();
