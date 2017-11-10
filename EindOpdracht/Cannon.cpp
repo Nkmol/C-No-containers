@@ -2,7 +2,7 @@
 #include "Helper.h"
 
 
-Cannon::Cannon(const String& type, const String& amount_span, const int& price) : buy_price_{price}, type_ {type},
+Cannon::Cannon(const String& type, const String& amount_span, const int& price, const String& damage_span) : buy_price_{price}, type_ {type},
                                                                                   acutal_amount_{0}
 {
 	if (amount_span != "")
@@ -13,9 +13,18 @@ Cannon::Cannon(const String& type, const String& amount_span, const int& price) 
 		min_ = String::stoi(r[0]);
 		max_ = String::stoi(r[1]);
 	}
+
+	if (damage_span != "")
+	{
+		Vector<String> r;
+		Helper::search_for_delimeter(amount_span, "-", r);
+
+		min_damage_ = String::stoi(r[0]);
+		max_damage_ = String::stoi(r[1]);
+	}
 }
 
-Cannon::Cannon() : Cannon("", "", 0)
+Cannon::Cannon() : Cannon("", "", 0, "")
 {
 }
 
@@ -48,4 +57,14 @@ void Cannon::reduce_actual_amount(const int& value) const
 const int& Cannon::get_price() const
 {
 	return buy_price_;
+}
+
+const int& Cannon::min_damage() const
+{
+	return min_damage_;
+}
+
+const int& Cannon::max_damage() const
+{
+	return max_damage_;
 }

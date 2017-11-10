@@ -84,9 +84,9 @@ Vector<Cannon> AdapterRepositories::create_cannons_adapter()
 {
 	Vector<Cannon> result;
 
-	result.push_back(Cannon{"light", "0-5", 50});
-	result.push_back(Cannon{"medium", "0-3", 200});
-	result.push_back(Cannon{"heavy", "0-2", 1000});
+	result.push_back(Cannon{"light", "0-5", 50, "0-2"});
+	result.push_back(Cannon{"medium", "0-3", 200, "0-4"});
+	result.push_back(Cannon{"heavy", "0-2", 1000, "0-6"});
 
 	return result;
 }

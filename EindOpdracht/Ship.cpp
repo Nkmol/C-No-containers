@@ -1,13 +1,14 @@
 #include "Ship.h"
 #include "Helper.h"
+#include <random>
 
 Ship::Ship(): Ship("", 0, 0, 0, "")
 {
 }
 
 Ship::Ship(const String& naam, int laadruimte, int kanonnen, int shadepunten, const String& bijzonderheden)
-	: max_shadepunten_{shadepunten}, cur_shadepunten_{0}, max_cargo_{laadruimte}, max_cannons_{kanonnen}, naam_{naam},
-	  cargo_ {0}
+	: max_shadepunten_{shadepunten}, cur_shadepunten_{0}, max_cargo_{laadruimte}, cargo_ {0}, max_cannons_{kanonnen},
+	  naam_{naam}
 {
 	if (bijzonderheden != "")
 	{
@@ -51,6 +52,11 @@ const int& Ship::cur_cargo() const
 const Vector<Product>& Ship::cargo() const
 {
 	return cargo_;
+}
+
+void Ship::cargo_clear()
+{
+	cargo_.clear();
 }
 
 const Vector<Cannon>& Ship::cannons() const
@@ -137,4 +143,17 @@ bool Ship::has_speciality(const String& value) const
 	}
 
 	return result;
+}
+
+int Ship::shoot(std::mt19937& random) const
+{
+	int total_damage = 0;
+	for(int i = 0; i < cannons_.used(); i++)
+	{
+		const auto& cannon = cannons_[i];
+		const std::uniform_int_distribution<int> dist_damage(cannon.min_damage(), cannon.max_damage());
+		total_damage += dist_damage(random);
+	}
+
+	return total_damage;
 }

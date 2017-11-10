@@ -101,7 +101,7 @@ void run_program()
 			{
 				std::cout << "Only " << route.turns() << " turns to go until you have arrived at " << route.to() << std::endl;
 
-				route.sail(player, mt);
+				route.sail(player, mt, adapter_ships, adapter_cannons);
 
 				std::cin.ignore();
 

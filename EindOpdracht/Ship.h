@@ -24,6 +24,7 @@ public:
 	const int& max_cargo() const;
 	const int& cur_cargo() const;
 	const Vector<Product>& cargo() const;
+	void cargo_clear();
 	const Vector<Cannon>& cannons() const;
 	const int& max_cannons() const;
 	const int& cur_cannons() const;
@@ -38,6 +39,7 @@ public:
 	void remove_good(int index);
 	bool sank() const;
 	bool has_speciality(const String& value) const;
+	int shoot(std::mt19937& random) const;
 };
 
 // https://stackoverflow.com/questions/5171739/tostring-override-in-c
